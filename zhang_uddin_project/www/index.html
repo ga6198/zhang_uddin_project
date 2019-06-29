@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+        For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+    <!--
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script type="text/javascript" src="jquery.js"></script>
+
+    <!-- 
+    <script type="text/javascript">
+        app.use(function (req, res, next) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            next();
+        });
+    </script>
+    -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var platform;
+
+            if (navigator.platform.match(/Win32|MacIntel/)) {
+                platform = "http://127.0.0.1/";
+            }
+            else {
+                platform = "http://10.0.2.2/";
+            }
+            $("#login-btn").click(function () {
+                var username = $("#username").val();
+                var password = $("#password").val();
+                if ($.trim(username).length > 0 & $.trim(password).length > 0) {
+                    $.ajax({
+                        type: "POST",  //Request type
+                        url: platform + "/zhang_kevin_project2/login.php",
+						//url: "login.php",
+                        data: { username: username, password: password },
+                        crossDomain: true,
+                        beforeSend: function (xhr) {
+                            xhr.withCredentials = true;
+                            $("#login-btn").val('Connecting...');
+                        },
+						cache: false,
+						//error: alert("some error"),
+						success: function (result) {
+							//alert(result); // for debugging
+
+							if (result === "logged in")
+                            {
+								location.href = "browse.html";
+
+								//get json for userinfo and save in session
+                                // save user info to session
+                                var url = platform + "/zhang_kevin_project2/getUserInfo.php";
+								var id;
+								var currentUsername;
+								var email;
+								var verified;
+								var token;
+								var currentPassword;
+								// get user data
+								$.post(url, { username: username }, function (data, textStatus) {
+									//alert(JSON.stringify(data)); //for debugging
+									id = data.id;
+									currentUsername = data.username;
+									email = data.email;
+									verified = data.verified;
+									token = data.token;
+									currentPassword = data.password;
+									//session variables
+									sessionStorage.setItem("user_id", id.toString(10));
+									sessionStorage.setItem("username", currentUsername);
+								}, "json");
+							}
+							else if (result === "failed")
+							{
+								alert("password_verify in login.php failed");
+							}
+							else
+							{
+								location.href = "index.html";
+								alert("Invalid credentials");
+							}
+                        }
+                        /*success: function (data) {
+                            //alert(data);
+
+                        }*/
+                    })
+                }
+                else {
+                    alert('Input fields are empty');
+                }
+            })
+        })
+    </script>
+
+    <title>zhangkevinproject</title>
+</head>
+<body>
+    <!--
+        <div class="app">
+        <h1>Apache Cordova</h1>
+        <div id="deviceready" class="blink">
+            <p class="event listening">Connecting to Device</p>
+            <p class="event received">Device is Ready</p>
+        </div>
+    </div>
+        -->
+
+    <div class="container">
+        <!-- <div class="row"> -->
+		<div class="col-md-6 offset-md-3 col-sm-12 form-div login">
+			<div class="form-group">
+				<label for="username">Username/Email</label>
+				<input type="text" name="username" id="username" class="form-control form-control-lg">
+			</div>
+			<div class="form-group">
+				<label for="password">Password</label>
+				<input type="password" name="password" id="password" class="form-control form-control-lg">
+			</div>
+			<div class="form-group">
+				<button type="submit" name="login-btn" id="login-btn" class="btn btn-primary btn-block btn-lg">Login</button>
+			</div>
+			<p class="text-center">If you need to make an account: <a href="register.html">Register</a></p>
+		</div>
+        <!-- </div> -->
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>

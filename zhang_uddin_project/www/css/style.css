@@ -1,0 +1,124 @@
+.form-div{
+	margin: 50px auto 50px;
+	padding: 25px 10px 25px 10px;
+	border: 1px solid;
+	border-radius: 5px;
+	/*font-size: 1.1em;*/
+}
+
+/*.form-control:focus{
+	box-shadow: none;
+}*/
+
+/*form p{
+	font-size: .89em;
+}*/
+
+/*.form-div.login{
+	margin-top: 100px
+}*/
+
+.logout{
+	color: red;
+}
+
+/*header bar*/
+/*.site-header {
+	background-image: url("../images/vanguard_blue.jpg");
+}*/
+
+/*nav bar*/
+.site-nav{
+	background-color: blue;
+	/*background-color: var(--nav-color); */
+	/* background-color: coral; */
+	color:white;
+	/*color:var(--header-font-color);*/
+	padding: 5px;
+}
+
+.site-nav ul{
+	padding: 0;
+	margin: auto;
+}
+
+.site-nav li{
+	display:inline;
+	padding-right: 20px;
+	font-size: 1.3em;
+}
+
+.site-nav a{
+	text-decoration:none;
+	color: white;
+}
+
+/* For radio buttons when searching for cards */
+/*.block {
+      display: block;
+}*/
+
+/* For card info boxes*/
+/*.row{
+	display: flex;
+	width: 100%;
+}*/
+
+.cardinfo {
+  border-radius: 15px;
+  border: 2px solid Navy;
+  padding: 20px;
+	
+  /*float: left;*/
+  display: inline-block;
+  width: 24%;
+  padding: 5px;
+  margin: 0.50%;
+  
+  overflow-wrap: break-word; /*handling long names and descriptions*/
+}
+
+.row::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+@media screen and (max-width: 800px) {
+  .cardinfo {
+	/*width: 50%;*/
+    width: 49%;
+	margin: 0.50%;
+  }
+}
+
+.deckinfo {
+  /*flex: 1;*/ /* additionally, equal width */
+  
+  padding: 1em;
+  border: 2px solid Navy;
+  border-radius: 15px;
+
+  width: 24%;
+  margin: 0.50%;
+  display: inline-block;
+  /*display: table-cell;*/
+
+  overflow-wrap: break-word; /*handling long names and descriptions*/
+}
+
+.deckinfo button{
+	display: inline-block;
+	text-align: center;
+}
+
+@media screen and (max-width: 800px) {
+  .deckinfo {
+    width: 49%;
+	margin: 0.50%;
+  }
+}
+
+.nodisplay{
+	display:none;
+}

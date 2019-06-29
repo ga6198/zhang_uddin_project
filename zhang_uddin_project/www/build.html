@@ -1,0 +1,243 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="css/style.css">
+
+	<script type="text/javascript" src="jquery.js"></script>
+
+	<script type="text/javascript">
+		//hold user's decks
+		var userDecks = []; // list of user deck objects
+
+		//function to get the image for a clan
+		function getClanImageDirectory(clanName) {
+			//remove spaces
+			var clanNameStripped = clanName.split(' ').join('');
+			var clanImageDir = "vanguardImages/clan/Icon_" + clanNameStripped + ".png";
+			return clanImageDir;
+		}
+
+		//get user id from session
+		var user_id = sessionStorage.getItem('user_id');
+		user_id = parseInt(user_id);
+
+        $(document).ready(function () {
+            var platform;
+
+            if (navigator.platform.match(/Win32|MacIntel/)) {
+                platform = "http://127.0.0.1/";
+            }
+            else {
+                platform = "http://10.0.2.2/";
+            }
+			$("#add-deck-btn").click(function () {
+				var deckname = $("#deckname").val();
+				var description = $("#description").val();
+				var clan = $("#clan").val();
+				if ($.trim(deckname).length > 0) {
+					$.ajax({
+                        type: "POST",  //Request type
+                        url: platform + "zhang_kevin_project2/adddeck.php",
+						data: { user_id: user_id, deckname: deckname, description: description, clan: clan },
+						//dataType: text, // for debugging
+						crossDomain: true,
+						beforeSend: function (xhr) {
+							xhr.withCredentials = true;
+						},
+						cache: false,
+						error: function (jqxhr, status, exception) {
+							alert('Exception:', exception);
+						},
+						success: function (result) {
+							if (result === "added deck") {
+								location.href = "build.html";
+								document.getElementById("added-deck").innerHTML = "Added deck: " + deckname;
+								//$("added-deck").innerHTML = "Added deck: " + deckname;
+							}
+							else if (result === "failed") {
+								alert("error happened");
+							}
+						}
+					})
+				}
+				else {
+					alert('Need deck name');
+				}
+			})
+
+            var getUserDecksUrl = platform + "zhang_kevin_project2/getUserDecks.php";
+			$.post(getUserDecksUrl, { user_id: user_id }, function (data, textStatus) {
+				//alert(JSON.stringify(data)); //for debugging
+				//for each deck, print contents
+				$.each(data, function (i, field) {
+
+					var deck_id = field.deck_id;
+					var deckname = field.deckname;
+					var description = field.description;
+					// change description if empty
+					if (description === "") {
+						description = "N/A";
+					}
+					var clan = field.clan;
+					var clanImageDir = getClanImageDirectory(clan);
+
+					var deck = { deck_id: deck_id, deckname: deckname, description: description, clan: clan };
+					//push each deck into user deck array
+					//alert(JSON.stringify(deck)); //for debugging
+					userDecks.push(deck);
+
+					$(".row").append(
+						"<div class='deckinfo'>" +
+						"<img src='" + clanImageDir + "' class='rounded' alt='" + clan + "' style='width:100%'" +
+						"<p>" +
+						"<strong>Deck Name: </strong>" + deckname + "<br>" +
+						"<strong>Description: </strong>" + description + "<br>" +
+						"<strong>Clan: </strong>" + clan + "<br>" +
+						//"<strong>Rating: </strong>" + rating + "<br>" +
+						"</p>" +
+
+						//button to view deck
+						"<div class='form-group'>" +
+						"<button type='submit' name='view-deck-btn' id='view-deck-" + i + "' class='btn btn-primary btn-block btn-sm view-deck-btn'>View Deck</button>" + 
+						"</div>" + 
+
+						//button to edit deck
+						"<div class='form-group'>" + 
+						"<button type='submit' name='set-deck-btn' id='set-deck" + i + "' class='btn btn-primary btn-block btn-sm set-deck-btn'>Edit Deck</button>" + 
+						"</div>" + 
+
+						"</div>");
+				});
+
+				//alert("User Decks: " + JSON.stringify(userDecks)); //for debugging
+			}, "json");
+		})
+
+		// command for the view deck button
+		// https://www.sitepoint.com/community/t/jquery-code-doesnt-work-on-dynamic-content-loaded-with-ajax/31758/5
+		$(document).on("click", ".view-deck-btn", function () {
+			//alert("Clicking on dynamic view button works");
+			//check the id
+			//alert(this.id);
+			var currentDeckId = this.id;
+			currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			//convert id string to int
+			currentDeckId = parseInt(currentDeckId);
+
+			//use id as index of userDeck array
+			//alert("selected deck: " + JSON.stringify(userDecks[currentDeckId]));
+
+			//save view deck info into session variables
+			//alert(JSON.stringify(userDecks[currentDeckId]));
+			sessionStorage.setItem('viewdeck', JSON.stringify(userDecks[currentDeckId]));
+
+			location.href = "viewdeck.html";
+		});
+
+		// command for the edit deck button
+		$(document).on("click", ".set-deck-btn", function () {
+			var currentDeckId = this.id;
+			currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			//convert id string to int
+			currentDeckId = parseInt(currentDeckId);
+
+			//save view deck info into session variables
+			//alert(JSON.stringify(userDecks[currentDeckId]));
+			sessionStorage.setItem('setdeck', JSON.stringify(userDecks[currentDeckId]));
+
+			location.href = "search.html";
+		});
+	</script>
+
+	<title>Build Decks</title>
+</head>
+
+<body>
+	<header class="site-header">
+		<div class="container">
+			<h1>Vanguard Deck Builder</h1>
+		</div>
+	</header>
+
+	<nav class="site-nav">
+		<div class="container">
+			<ul>
+				<li><a href="browse.html">Browse Decks</a></li>
+				<li><a href="build.html">Build Decks</a></li>
+			</ul>
+		</div>
+	</nav>
+	
+	<section class="site-main">
+		<div class="container">
+			<p id="added-deck"></p>
+
+			<h3 class="text-center">Your Decks</h3>
+			<div class="form-group">
+				<h6>Deck Name</h6>
+				<input type="text" name="deckname" id="deckname" placeholder="Required" class="form-control form-control-sm" required>
+			</div>
+			<div class="form-group">
+				<h6>Deck Description</h6>
+				<textarea class="form-control form-control-lg" name="description" id="description" rows="3"></textarea>
+			</div>
+			<div class="form-group">
+				<h6>Clan</h6>
+				<select name='clan' id="clan">
+					<option value='Angel Feather'>Angel Feather</option>
+					<option value='Aqua Force'>Aqua Force</option>
+					<option value='Bermuda Triangle'>Bermuda Triangle</option>
+					<option value='Dark Irregulars'>Dark Irregulars</option>
+					<option value='Dimension Police'>Dimension Police</option>
+					<option value='Gear Chronicle'>Gear Chronicle</option>
+					<option value='Genesis'>Genesis</option>
+					<option value='Gold Paladin'>Gold Paladin</option>
+					<option value='Granblue'>Granblue</option>
+					<option value='Great Nature'>Great Nature</option>
+					<option value='Kagero'>Kagero</option>
+					<option value='Link Joker'>Link Joker</option>
+					<option value='Megacolony'>Megacolony</option>
+					<option value='Murakumo'>Murakumo</option>
+					<option value='Narukami'>Narukami</option>
+					<option value='Neo Nectar'>Neo Nectar</option>
+					<option value='Nova Grappler'>Nova Grappler</option>
+					<option value='Nubatama'>Nubatama</option>
+					<option value='Oracle Think Tank'>Oracle Think Tank</option>
+					<option value='Pale Moon'>Pale Moon</option>
+					<option value='Royal Paladin'>Royal Paladin</option>
+					<option value='Shadow Paladin'>Shadow Paladin</option>
+					<option value='Spike Brothers'>Spike Brothers</option>
+					<option value='Tachikaze'>Tachikaze</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<button type="submit" name="add-deck-btn" id="add-deck-btn" class="btn btn-primary btn-block btn-lg">Add Deck</button>
+			</div>
+
+			<div class="row">
+				<!-- <div class="deck"></div> -->
+			</div>
+		</div>
+	</section>
+
+	<footer class="site-footer">
+
+		
+	</footer>
+
+</body>
+
+</html>

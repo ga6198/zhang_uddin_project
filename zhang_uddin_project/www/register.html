@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--
+        Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+        For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+    -->
+    <!--
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+    -->
+    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script type="text/javascript" src="jquery.js"></script>
+
+    <!-- 
+    <script type="text/javascript">
+        app.use(function (req, res, next) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            next();
+        });
+    </script>
+    -->
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var platform;
+
+            if (navigator.platform.match(/Win32|MacIntel/)) {
+                platform = "http://127.0.0.1/";
+            }
+            else {
+                platform = "http://10.0.2.2/";
+            }
+            $("#register-btn").click(function () {
+				var username = $("#username").val();
+				var email = $("#email").val();
+				var password = $("#password").val();
+				var confirmPassword = $("#confirm-password").val();
+				//if all fields full
+				if ($.trim(username).length > 0 & $.trim(email).length > 0 & $.trim(password).length > 0 & $.trim(confirmPassword).length > 0) {
+					//if password matches confirm password box
+					if (password === confirmPassword) {
+						$.ajax({
+							type: "POST",  //Request type
+                            url: platform + "zhang_kevin_project2/register.php",
+							data: { username: username, email: email, password: password, confirmPassword: confirmPassword },
+							crossDomain: true,
+							beforeSend: function (xhr) {
+								xhr.withCredentials = true;
+								$("#register-btn").val('Connecting...');
+							},
+							cache: false,
+							success: function (result) {
+								if (result === "registration success") {
+									location.href = "browse.html";
+
+									//get json for userinfo and save in session
+									// save user info to session
+                                    var url = platform + "zhang_kevin_project2/getUserInfo.php";
+									var id;
+									var currentUsername;
+									var email;
+									var verified;
+									var token;
+									var currentPassword;
+									// get user data
+									$.post(url, { username: username }, function (data, textStatus) {
+										//alert(JSON.stringify(data)); //for debugging
+										id = data.id;
+										currentUsername = data.username;
+										email = data.email;
+										verified = data.verified;
+										token = data.token;
+										currentPassword = data.password;
+
+										//session variables
+										sessionStorage.setItem("user_id", id.toString(10));
+										sessionStorage.setItem("username", currentUsername);
+									}, "json");
+								}
+								else if (result === "invalid email") {
+									alert("Please enter a valid email");
+								}
+								else if (result === "username exists") {
+									alert("Username is already taken");
+								}
+								else {
+									alert("Registration failed");
+								}
+							}
+						})
+					}
+					else {
+						alert('Passwords do not match');
+					}
+                }
+                else {
+                    alert('Please fill all fields');
+                }
+            })
+        })
+    </script>
+
+    <title>Register</title>
+</head>
+<body>
+    <div class="container">
+		<div class="col-md-6 offset-md-3 col-sm-12 form-div">
+			<form>
+				<div class="form-group">
+					<label for="username">Username</label>
+					<input type="text" name="username" placeholder="Required" id="username" class="form-control form-control-lg" required>
+				</div>
+				<div class="form-group">
+					<label for="username">Email</label>
+					<input type="email" name="email" placeholder="Required" id="email" class="form-control form-control-lg" required>
+				</div>
+				<div class="form-group">
+					<label for="password">Password</label>
+					<input type="password" name="password" placeholder="Required" id="password" class="form-control form-control-lg" required>
+				</div>
+				<div class="form-group">
+					<label for="confirm-password">Confirm Password</label>
+					<input type="password" name="confirm-password" placeholder="Required" id="confirm-password" class="form-control form-control-lg" required>
+				</div>
+				<div class="form-group">
+					<button type="submit" name="register-btn" id="register-btn" class="btn btn-primary btn-block btn-lg">Register</button>
+				</div>
+				<p class="text-center">If you already have an account: <a href="index.html">Log In</a></p>
+			</form>
+		</div>
+    </div>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
+</body>
+</html>

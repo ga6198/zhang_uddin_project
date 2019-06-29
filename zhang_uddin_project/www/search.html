@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<link rel="stylesheet" href="css/style.css">
+
+	<script type="text/javascript" src="jquery.js"></script>
+
+	<script type="text/javascript">
+		//get user id from session
+		var user_id = sessionStorage.getItem('user_id');
+		user_id = parseInt(user_id);
+
+		//get set (edit) deck info from session
+		var setdeck = sessionStorage.getItem('setdeck');
+		//alert(setdeck);
+		setdeck = JSON.parse(setdeck);
+
+		//save list of card search results
+		var cardSearchResults = []
+
+        $(document).ready(function () {
+            var platform;
+
+            if (navigator.platform.match(/Win32|MacIntel/)) {
+                platform = "http://127.0.0.1/";
+            }
+            else {
+                platform = "http://10.0.2.2/";
+            }
+			//if editing deck, display current deck
+			if (setdeck !== null) {
+				document.getElementById("editing-deck").innerHTML = "Editing deck: <strong>" + setdeck.deckname + "</strong>. Any card added will go to this deck.";
+			}
+
+			$("#card-search-btn").click(function () {
+				//clear previous search results
+				$('.row').html("");
+
+				var cardname = $("#cardname").val();
+				var clan = $("#clan").val();
+				var grade = $("#grade").val();
+
+
+                var searchCardsUrl = platform + "zhang_kevin_project2/searchcards.php";
+				$.post(searchCardsUrl, { cardname: cardname, clan: clan, grade: grade }, function (data, textStatus) {
+					//alert(JSON.stringify(data)); //for debugging
+
+					//clear any current card search results
+					cardSearchResults = [];
+					//cardSearchResults.length = 0;
+
+					//for each card, print info
+					$.each(data, function (i, field) {
+						var cards_id = field.cards_id;
+						var name = field.name;
+						var set = field.set;
+						var imageFile = field.imageFile;
+						// if image doesn't end in jpg, add jpg
+						if (!imageFile.endsWith(".jpg")) {
+							imageFile = imageFile + ".jpg";
+						}
+
+						var clan = field.clan;
+						var grade = field.grade;
+						var type = field.type;
+
+						var imagePath = "vanguardImages/" + imageFile;
+						var onErrorPath = "vanguardImages/cfv_back.jpg";
+
+						//push card to search results list
+						var card = { cards_id: cards_id, name: name, set: set, imageFile: imageFile, clan: clan, grade: grade, type: type, imagePath: imagePath, onErrorPath: onErrorPath };
+						cardSearchResults.push(card);
+
+						//add cardinfo boxes
+						$(".row").append(
+							//card info
+							"<div class='cardinfo'>" +
+							"<img src='" + imagePath + "' class='rounded' alt='" + name + "' onerror=this.src='" + onErrorPath + "' style='width:100%'>" +
+							"<p>" +
+							"<strong>Name: </strong>" + name + "<br>" +
+							"<strong>Clan: </strong>" + clan + "<br>" +
+							"<strong>Grade/Skill: </strong>" + grade + "<br>" +
+							"</p>" +
+
+							//add-cards selection
+							"<div class='form-group'>" +
+							"<p><strong>Number to Add: </strong>" +
+							"<select name='numberOfCards' id='num-cards-" + i + "'>" +
+							"<option value='1'>1</option>" +
+							"<option value='2'>2</option>" +
+							"<option value='3'>3</option>" +
+							"<option value='4'>4</option>" +
+							"</select>" + 
+							"</p>" + 
+							"</div>" +
+
+							//submission button
+							"<div class='form-group'>" +
+							"<button type='submit' name='add-card-btn' id='add-card-" + i + "' class='btn btn-primary btn-block btn-sm add-card-btn'>Add Cards</button>" +
+							"</div>" +
+
+							"</div>");
+					});
+				}, "json");
+			})
+
+			// command for the add card button
+			$(document).on("click", ".add-card-btn", function () {
+				var currentCardId = this.id;
+				currentCardId = currentCardId[currentCardId.length - 1]; //get last character of array (the number)
+				//convert id string to int
+				currentCardId = parseInt(currentCardId);
+
+				var numCardsId = "#num-cards-" + currentCardId;
+
+				var numCards = $(numCardsId).val();
+
+				//alert(numCards);
+
+				var deck_id = setdeck.deck_id;
+				var cards_id = cardSearchResults[currentCardId].cards_id;
+				var cardname = cardSearchResults[currentCardId].name;
+				var deckname = setdeck.deckname;
+
+                //send number and card id to php w/ ajax post
+                var addCardsUrl = platform + "zhang_kevin_project2/addcards.php";
+				$.post(addCardsUrl, { numCards: numCards, cards_id: cards_id, deck_id: deck_id });
+				document.getElementById("added-cards").innerHTML = "Added <strong>" + numCards + "</strong> copies of <strong>" + cardname + "</strong> to <strong>" + deckname + ".</strong>";
+				//scroll to top
+				$('html, body').animate({ scrollTop: 0 }, 'fast');
+			});
+		})
+
+	</script>
+
+	<title>Search Cards</title>
+</head>
+
+<body>
+	<header class="site-header">
+		<div class="container">
+			<h1>Vanguard Deck Builder</h1>
+		</div>
+	</header>
+
+	<nav class="site-nav">
+		<div class="container">
+			<ul>
+				<li><a href="browse.html">Browse Decks</a></li>
+				<li><a href="build.html">Build Decks</a></li>
+			</ul>
+		</div>
+	</nav>
+	
+	<section class="site-main">
+		<div class="container">
+			<div id="editing-deck"></div>
+			<div id="added-cards"></div>
+		
+			<h3 class="text-center">Browse Cards</h3>
+			<div class="form-group">
+				<h6>Card Name</h6>
+				<!-- <label for="cardname">Card Name</label> -->
+				<input type="text" name="cardname" id="cardname" class="form-control form-control-sm">
+			</div>
+			<div class="form-group">
+				<h6>Clan</h6>
+				<select name='clan' id='clan'>
+					<option value='%'>Any</option>
+					<option value='Angel Feather'>Angel Feather</option>
+					<option value='Aqua Force'>Aqua Force</option>
+					<option value='Bermuda Triangle'>Bermuda Triangle</option>
+					<option value='Dark Irregulars'>Dark Irregulars</option>
+					<option value='Dimension Police'>Dimension Police</option>
+					<option value='Gear Chronicle'>Gear Chronicle</option>
+					<option value='Genesis'>Genesis</option>
+					<option value='Gold Paladin'>Gold Paladin</option>
+					<option value='Granblue'>Granblue</option>
+					<option value='Great Nature'>Great Nature</option>
+					<option value='Kagero'>Kagero</option>
+					<option value='Link Joker'>Link Joker</option>
+					<option value='Megacolony'>Megacolony</option>
+					<option value='Murakumo'>Murakumo</option>
+					<option value='Narukami'>Narukami</option>
+					<option value='Neo Nectar'>Neo Nectar</option>
+					<option value='Nova Grappler'>Nova Grappler</option>
+					<option value='Nubatama'>Nubatama</option>
+					<option value='Oracle Think Tank'>Oracle Think Tank</option>
+					<option value='Pale Moon'>Pale Moon</option>
+					<option value='Royal Paladin'>Royal Paladin</option>
+					<option value='Shadow Paladin'>Shadow Paladin</option>
+					<option value='Spike Brothers'>Spike Brothers</option>
+					<option value='Tachikaze'>Tachikaze</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<h6>Grade</h6>
+				<select name='grade' id='grade'>
+					<option value='%' >Any</option>
+					<option value='Grade 0'>0</option>
+					<option value='Grade 1'>1</option>
+					<option value='Grade 2'>2</option>
+					<option value='Grade 3'>3</option>
+					<option value='Grade 4'>4</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<button type="submit" name="card-search-btn" id='card-search-btn' class="btn btn-primary btn-block btn-lg">Search Cards</button>
+			</div>
+		
+			<div class="row">
+
+			</div>
+		</div>
+	</section>
+
+	<footer class="site-footer">
+
+		
+	</footer>
+
+</body>
+
+</html>
