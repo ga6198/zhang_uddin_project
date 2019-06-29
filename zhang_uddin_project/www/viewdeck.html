@@ -12,7 +12,12 @@
 	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
 	<link rel="stylesheet" type="text/css" href="css/index.css">
 
+	<!-- Bootstrap -->
+	<!--
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	-->
+	<link rel="stylesheet" type="text/css" href="bootstrap-4.1.3-dist/css/bootstrap.min.css" />
+	<script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
 
 	<link rel="stylesheet" href="css/style.css">
 
@@ -58,18 +63,18 @@
 
 		$(document).ready(function () {
 			//print deck name
-            var platform;
+			var platform;
 
-            if (navigator.platform.match(/Win32|MacIntel/)) {
-                platform = "http://127.0.0.1/";
-            }
-            else {
-                platform = "http://10.0.2.2/";
-            }
+			if (navigator.platform.match(/Win32|MacIntel/)) {
+				platform = "http://127.0.0.1/";
+			}
+			else {
+				platform = "http://10.0.2.2/";
+			}
 
 			document.getElementById("added-deck").innerHTML = viewdeck.deckname;
 
-            var viewUserDeckUrl = platform + "zhang_kevin_project2/viewUserDeck.php";
+			var viewUserDeckUrl = platform + "zhang_kevin_project2/viewUserDeck.php";
 			$.post(viewUserDeckUrl, { deck_id: viewdeck.deck_id }, function (data, textStatus) {
 				//alert(JSON.stringify(data)); //for debugging
 				var deck = data.deck;
@@ -236,14 +241,14 @@
 				var deck_id = viewdeck.deck_id;
 				var cardname = deckCards[currentCardId].name;
 
-                //send number and card id to php w/ ajax post
-                var removeCardsUrl = platform + "zhang_kevin_project2/removecards.php";
+				//send number and card id to php w/ ajax post
+				var removeCardsUrl = platform + "zhang_kevin_project2/removecards.php";
 				$.post(removeCardsUrl, { cards_id: cards_id, deck_id: deck_id });
 
 				//deckCards.splice(currentCardId, 1);
 				location.href = "viewdeck.html";
 				//document.getElementById("remove-cards").innerHTML = "Removed 1 copy of <strong>" + cardname + ".</strong>";
-				
+
 			});
 
 			// command for the rate button
@@ -253,8 +258,8 @@
 
 				var deck_id = viewdeck.deck_id;
 
-                //post rating w/ ajax post
-                var postRatingUrl = platform + "zhang_kevin_project2/postrating.php";
+				//post rating w/ ajax post
+				var postRatingUrl = platform + "zhang_kevin_project2/postrating.php";
 				$.post(postRatingUrl, { deck_id: deck_id, rating: rating, user_id: user_id }, function (data, textStatus) {
 					document.getElementById("number-rating").style.display = "none";
 					if (data === "rating already submitted") {

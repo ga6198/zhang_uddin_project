@@ -1,73 +1,77 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <!--
-        Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
-        For details, see http://go.microsoft.com/fwlink/?LinkID=617521
-    -->
-    <!--
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
-    -->
-    <meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+	<!--
+		Customize the content security policy in the meta tag below as needed. Add 'unsafe-inline' to default-src to enable inline JavaScript.
+		For details, see http://go.microsoft.com/fwlink/?LinkID=617521
+	-->
+	<!--
+	<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">
+	-->
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
 
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <meta name="format-detection" content="telephone=no">
-    <meta name="msapplication-tap-highlight" content="no">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
-    <link rel="stylesheet" type="text/css" href="css/index.css">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<!-- Bootstrap -->
+	<!--
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	-->
+	<link rel="stylesheet" type="text/css" href="bootstrap-4.1.3-dist/css/bootstrap.min.css" />
+	<script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/style.css">
 
-    <script type="text/javascript" src="jquery.js"></script>
+	<script type="text/javascript" src="jquery.js"></script>
 
-    <!-- 
-    <script type="text/javascript">
-        app.use(function (req, res, next) {
-            res.header("Access-Control-Allow-Origin", "*");
-            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-            next();
-        });
-    </script>
-    -->
+	<!--
+	<script type="text/javascript">
+		app.use(function (req, res, next) {
+			res.header("Access-Control-Allow-Origin", "*");
+			res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+			next();
+		});
+	</script>
+	-->
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var platform;
+	<script type="text/javascript">
+		$(document).ready(function () {
+			var platform;
 
-            if (navigator.platform.match(/Win32|MacIntel/)) {
-                platform = "http://127.0.0.1/";
-            }
-            else {
-                platform = "http://10.0.2.2/";
-            }
-            $("#login-btn").click(function () {
-                var username = $("#username").val();
-                var password = $("#password").val();
-                if ($.trim(username).length > 0 & $.trim(password).length > 0) {
-                    $.ajax({
-                        type: "POST",  //Request type
-                        url: platform + "/zhang_kevin_project2/login.php",
+			if (navigator.platform.match(/Win32|MacIntel/)) {
+				platform = "http://127.0.0.1/";
+			}
+			else {
+				platform = "http://10.0.2.2/";
+			}
+			$("#login-btn").click(function () {
+				var username = $("#username").val();
+				var password = $("#password").val();
+				if ($.trim(username).length > 0 & $.trim(password).length > 0) {
+					$.ajax({
+						type: "POST",  //Request type
+						url: platform + "/zhang_kevin_project2/login.php",
 						//url: "login.php",
-                        data: { username: username, password: password },
-                        crossDomain: true,
-                        beforeSend: function (xhr) {
-                            xhr.withCredentials = true;
-                            $("#login-btn").val('Connecting...');
-                        },
+						data: { username: username, password: password },
+						crossDomain: true,
+						beforeSend: function (xhr) {
+							xhr.withCredentials = true;
+							$("#login-btn").val('Connecting...');
+						},
 						cache: false,
 						//error: alert("some error"),
 						success: function (result) {
 							//alert(result); // for debugging
 
-							if (result === "logged in")
-                            {
+							if (result === "logged in") {
 								location.href = "browse.html";
 
 								//get json for userinfo and save in session
-                                // save user info to session
-                                var url = platform + "/zhang_kevin_project2/getUserInfo.php";
+								// save user info to session
+								var url = platform + "/zhang_kevin_project2/getUserInfo.php";
 								var id;
 								var currentUsername;
 								var email;
@@ -88,30 +92,28 @@
 									sessionStorage.setItem("username", currentUsername);
 								}, "json");
 							}
-							else if (result === "failed")
-							{
+							else if (result === "failed") {
 								alert("password_verify in login.php failed");
 							}
-							else
-							{
+							else {
 								location.href = "index.html";
 								alert("Invalid credentials");
 							}
-                        }
-                        /*success: function (data) {
-                            //alert(data);
+						}
+						/*success: function (data) {
+							//alert(data);
 
-                        }*/
-                    })
-                }
-                else {
-                    alert('Input fields are empty');
-                }
-            })
-        })
-    </script>
+						}*/
+					})
+				}
+				else {
+					alert('Input fields are empty');
+				}
+			})
+		})
+	</script>
 
-    <title>zhangkevinproject</title>
+	<title>zhangkevinproject</title>
 </head>
 <body>
     <!--
