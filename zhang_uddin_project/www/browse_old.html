@@ -49,59 +49,43 @@
 				platform = "http://10.0.2.2/";
 			}
 
-			$("#deck-search-btn").click(function () {
-				//clear previous search results
-				$('.row').html("");
+			var url = platform + "zhang_kevin_project2/getAllDecks.php";
+			$.getJSON(url, function (result) {
+				console.log(result);
+				$.each(result, function (i, field) {
+					var deck_id = field.deck_id;
+					var deckname = field.deckname;
+					var description = field.description;
+					// change description if empty
+					if (description === "") {
+						description = "N/A";
+					}
+					var creator = field.username;
+					var clan = field.clan;
+					var clanImageDir = getClanImageDirectory(clan);
 
-				var deckname = $("#deckname").val();
-				var clan = $("#clan").val();
-				var creator = $("#creator").val();
-				
-				var url = platform + "zhang_kevin_project2/searchdecks.php";
-				$.post(url, { deckname: deckname, clan: clan, creator: creator }, function (data, textStatus) {
-					//alert(JSON.stringify(data)); //for debugging
+					var deck = { deck_id: deck_id, deckname: deckname, description: description, clan: clan };
+					//push each deck into deck array
+					allDecks.push(deck);
 
-					//clear any current card search results
-					allDecks = [];
-					//cardSearchResults.length = 0;
+					$(".row").append(
+						"<div class='deckinfo'>" +
+						"<img src='" + clanImageDir + "' class='rounded' alt='" + clan + "' style='width:100%'" +
+						"<p>" +
+						"<strong>Deck Name: </strong>" + deckname + "<br>" +
+						"<strong>Clan: </strong>" + clan + "<br>" +
+						"<strong>Creator: </strong>" + creator + "<br>" +
+						//"<strong>Rating: </strong>" + rating + "<br>" +
+						"</p>" +
 
-					//for each card, print info
-					$.each(data, function (i, field) {
-						var deck_id = field.deck_id;
-						var deckname = field.deckname;
-						var description = field.description;
-						// change description if empty
-						if (description === "") {
-							description = "N/A";
-						}
-						var creator = field.username;
-						var clan = field.clan;
-						var clanImageDir = getClanImageDirectory(clan);
+						//button to view deck
+						"<div class='form-group'>" +
+						"<button type='submit' name='view-deck-btn' id='view-deck-" + i + "' class='btn btn-primary btn-block btn-sm view-deck-btn'>View Deck</button>" +
+						"</div>" +
 
-						var deck = { deck_id: deck_id, deckname: deckname, description: description, clan: clan };
-						//push each deck into deck array
-						allDecks.push(deck);
-
-						//add deckinfo boxes
-						$(".row").append(
-							"<div class='deckinfo'>" +
-							"<img src='" + clanImageDir + "' class='rounded' alt='" + clan + "' style='width:100%'" +
-							"<p>" +
-							"<strong>Deck Name: </strong>" + deckname + "<br>" +
-							"<strong>Clan: </strong>" + clan + "<br>" +
-							"<strong>Creator: </strong>" + creator + "<br>" +
-							//"<strong>Rating: </strong>" + rating + "<br>" +
-							"</p>" +
-
-							//button to view deck
-							"<div class='form-group'>" +
-							"<button type='submit' name='view-deck-btn' id='view-deck-" + i + "' class='btn btn-primary btn-block btn-sm view-deck-btn'>View Deck</button>" +
-							"</div>" +
-
-							"</div>");
-					});
-				}, "json");
-			})
+						"</div>");
+				});
+			});
 		});
 
 		// command for the view deck button
@@ -182,10 +166,6 @@
 					<option value='Spike Brothers'>Spike Brothers</option>
 					<option value='Tachikaze'>Tachikaze</option>
 				</select>
-			</div>
-			<div class="form-group">
-				<h6>Creator</h6>
-				<input type="text" name="creator" id="creator" class="form-control form-control-sm">
 			</div>
 			<div class="form-group">
 				<button type="submit" name="deck-search-btn" id="deck-search-btn" class="btn btn-primary btn-block btn-lg">Search Decks</button>
