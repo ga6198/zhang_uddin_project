@@ -96,6 +96,7 @@
 					if (description === "") {
 						description = "N/A";
 					}
+					var creator = field.username;
 					var clan = field.clan;
 					var clanImageDir = getClanImageDirectory(clan);
 
@@ -109,8 +110,8 @@
 						"<img src='" + clanImageDir + "' class='rounded' alt='" + clan + "' style='width:100%'" +
 						"<p>" +
 						"<strong>Deck Name: </strong>" + deckname + "<br>" +
-						"<strong>Description: </strong>" + description + "<br>" +
 						"<strong>Clan: </strong>" + clan + "<br>" +
+						"<strong>Creator: </strong>" + creator + "<br>" +
 						//"<strong>Rating: </strong>" + rating + "<br>" +
 						"</p>" +
 

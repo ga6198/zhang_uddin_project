@@ -24,6 +24,9 @@
 	<script type="text/javascript" src="jquery.js"></script>
 
 	<script type="text/javascript">
+		//hold decks
+		var allDecks = []; // list of user deck objects
+
 		//function to get the image for a clan
 		function getClanImageDirectory(clanName) {
 			//remove spaces
@@ -57,20 +60,53 @@
 					if (description === "") {
 						description = "N/A";
 					}
+					var creator = field.username;
 					var clan = field.clan;
 					var clanImageDir = getClanImageDirectory(clan);
+
+					var deck = { deck_id: deck_id, deckname: deckname, description: description, clan: clan };
+					//push each deck into deck array
+					allDecks.push(deck);
+
 					$(".row").append(
 						"<div class='deckinfo'>" +
 						"<img src='" + clanImageDir + "' class='rounded' alt='" + clan + "' style='width:100%'" +
 						"<p>" +
 						"<strong>Deck Name: </strong>" + deckname + "<br>" +
-						"<strong>Description: </strong>" + description + "<br>" +
 						"<strong>Clan: </strong>" + clan + "<br>" +
+						"<strong>Creator: </strong>" + creator + "<br>" +
 						//"<strong>Rating: </strong>" + rating + "<br>" +
 						"</p>" +
+
+						//button to view deck
+						"<div class='form-group'>" +
+						"<button type='submit' name='view-deck-btn' id='view-deck-" + i + "' class='btn btn-primary btn-block btn-sm view-deck-btn'>View Deck</button>" +
+						"</div>" +
+
 						"</div>");
 				});
 			});
+		});
+
+		// command for the view deck button
+		// https://www.sitepoint.com/community/t/jquery-code-doesnt-work-on-dynamic-content-loaded-with-ajax/31758/5
+		$(document).on("click", ".view-deck-btn", function () {
+			//alert("Clicking on dynamic view button works");
+			//check the id
+			//alert(this.id);
+			var currentDeckId = this.id;
+			currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			//convert id string to int
+			currentDeckId = parseInt(currentDeckId);
+
+			//use id as index of userDeck array
+			//alert("selected deck: " + JSON.stringify(userDecks[currentDeckId]));
+
+			//save view deck info into session variables
+			//alert(JSON.stringify(userDecks[currentDeckId]));
+			sessionStorage.setItem('viewdeck', JSON.stringify(allDecks[currentDeckId]));
+
+			location.href = "viewanydeck.html";
 		});
 	</script>
 
@@ -96,6 +132,44 @@
 	<section class="site-main">
 		<div class="container">
 			<h3 class="text-center">All Decks</h3>
+
+			<div class="form-group">
+				<h6>Deck Name</h6>
+				<input type="text" name="deckname" id="deckname" class="form-control form-control-sm">
+			</div>
+			<div class="form-group">
+				<h6>Clan</h6>
+				<select name='clan' id="clan">
+					<option value='%'>Any</option>
+					<option value='Angel Feather'>Angel Feather</option>
+					<option value='Aqua Force'>Aqua Force</option>
+					<option value='Bermuda Triangle'>Bermuda Triangle</option>
+					<option value='Dark Irregulars'>Dark Irregulars</option>
+					<option value='Dimension Police'>Dimension Police</option>
+					<option value='Gear Chronicle'>Gear Chronicle</option>
+					<option value='Genesis'>Genesis</option>
+					<option value='Gold Paladin'>Gold Paladin</option>
+					<option value='Granblue'>Granblue</option>
+					<option value='Great Nature'>Great Nature</option>
+					<option value='Kagero'>Kagero</option>
+					<option value='Link Joker'>Link Joker</option>
+					<option value='Megacolony'>Megacolony</option>
+					<option value='Murakumo'>Murakumo</option>
+					<option value='Narukami'>Narukami</option>
+					<option value='Neo Nectar'>Neo Nectar</option>
+					<option value='Nova Grappler'>Nova Grappler</option>
+					<option value='Nubatama'>Nubatama</option>
+					<option value='Oracle Think Tank'>Oracle Think Tank</option>
+					<option value='Pale Moon'>Pale Moon</option>
+					<option value='Royal Paladin'>Royal Paladin</option>
+					<option value='Shadow Paladin'>Shadow Paladin</option>
+					<option value='Spike Brothers'>Spike Brothers</option>
+					<option value='Tachikaze'>Tachikaze</option>
+				</select>
+			</div>
+			<div class="form-group">
+				<button type="submit" name="deck-search-btn" id="deck-search-btn" class="btn btn-primary btn-block btn-lg">Search Decks</button>
+			</div>
 
 			<div class="row">
 				<!-- <div id="decks"></div> -->

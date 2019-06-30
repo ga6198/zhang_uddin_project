@@ -125,11 +125,6 @@
 						"<strong>Grade/Skill: </strong>" + field.grade + "<br>" +
 						"</p>" +
 
-						//remove card button
-						"<div class='form-group'>" +
-						"<button type='submit' name='remove-card-btn' id='remove-card-" + i + "' class='btn btn-primary btn-block btn-sm remove-card-btn'>Remove Card</button>" +
-						"</div>" +
-
 						"</div>");
 
 					//initialize card count dictionary to 0 for each card
@@ -182,48 +177,7 @@
 						cardSet.shift();
 					}
 				});
-
-				/*
-				//hold cards sorted by grade
-				var sortedGrades = [];
-
-				// object of arrays, that sorts cards by grade
-				var deckByGrade = groupBy(deckCards, 'grade');
-				alert(JSON.stringify(deckByGrade));
-				// iterate to get array of cards in each grade
-				$.each(deckByGrade, function (i, field) {
-					alert(JSON.stringify(field));
-					var cardsByGrade = field;
-
-					var sortedCardGrade = sortObj(cardsByGrade, 'name');
-					sortedGrades.push(sortedCardGrade);
-				});
-				alert(JSON.stringify(sortedGrades)); //[[g4][g3][g2]]
-
-				//reorganize grades
-				*/
 			}, "json");
-
-			// command for the remove card button
-			$(document).on("click", ".remove-card-btn", function () {
-				var currentCardId = this.id;
-				currentCardId = currentCardId[currentCardId.length - 1]; //get last character of array (the number)
-				//convert id string to int
-				currentCardId = parseInt(currentCardId);
-
-				var cards_id = deckCards[currentCardId].cards_id;
-				var deck_id = viewdeck.deck_id;
-				var cardname = deckCards[currentCardId].name;
-
-				//send number and card id to php w/ ajax post
-				var removeCardsUrl = platform + "zhang_kevin_project2/removecards.php";
-				$.post(removeCardsUrl, { cards_id: cards_id, deck_id: deck_id });
-
-				//deckCards.splice(currentCardId, 1);
-				location.href = "viewdeck.html";
-				//document.getElementById("remove-cards").innerHTML = "Removed 1 copy of <strong>" + cardname + ".</strong>";
-
-			});
 
 			// command for the rate button
 			$(document).on("click", "#rating-btn", function () {
