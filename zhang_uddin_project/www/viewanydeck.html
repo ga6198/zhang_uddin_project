@@ -206,6 +206,11 @@
 			$(document).on("click", ".decklist-btn", function () {
 				$(".decklist").toggle();
 			});
+
+			// command for playtest/draw cards button
+			$(document).on("click", ".playtest-btn", function () {
+				location.href = "playtest.html";
+			});
 		})
 	</script>
 
@@ -233,7 +238,12 @@
 			<!-- <p id="added-deck"></p> -->
 
 			<h3 id="added-deck" class="text-center"></h3>
+
+			<hr />
+
 			Description: <p id="desc"></p>
+
+			<hr />
 
 			<p class="text-center">Rate/Comment</p>
 			<div class="form-group" id="number-rating">
@@ -248,6 +258,8 @@
 			</div>
 			<p id="review-score"></p>
 
+			<hr />
+
 			<button class="btn btn-primary btn-sm decklist-btn">Show Decklist</button>
 			<div class="decklist nodisplay">
 				<p>Grade 0:</p>
@@ -261,6 +273,10 @@
 				<p>Grade 4:</p>
 				<ul id="g4-list"></ul>
 			</div>
+
+			<button class="btn btn-primary btn-sm playtest-btn">Draw Starting Hand</button>
+
+			<hr />
 
 			<div class="row">
 
