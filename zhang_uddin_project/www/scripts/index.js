@@ -18,6 +18,8 @@
         var receivedElement = parentElement.querySelector('.received');
         listeningElement.setAttribute('style', 'display:none;');
         receivedElement.setAttribute('style', 'display:block;');
+
+        alert("testing onDeviceReady");
     };
 
     function onPause() {
@@ -27,4 +29,6 @@
     function onResume() {
         // TODO: This application has been reactivated. Restore application state here.
     };
+
+
 } )();
