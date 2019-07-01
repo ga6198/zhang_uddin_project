@@ -114,12 +114,21 @@
   /*display: table-cell;*/
 
   overflow-wrap: break-word; /*handling long names and descriptions*/
+
+  position: relative;
+  min-height: 425px;
 }
 
-.deckinfo button{
+.deckactions {
+	position: absolute;
+	bottom: 0;
+	left: 5%;
+} 
+
+/*.deckinfo button{
 	display: inline-block;
 	text-align: center;
-}
+}*/
 
 @media screen and (max-width: 800px) {
   .deckinfo {

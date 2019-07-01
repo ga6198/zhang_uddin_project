@@ -52,7 +52,10 @@
 				var deckname = $("#deckname").val();
 				var description = $("#description").val();
 				var clan = $("#clan").val();
-				if ($.trim(deckname).length > 0) {
+				if ($.trim(deckname).length > 20) {
+					alert("Please make deck name 20 characters or less");
+				}
+				else if ($.trim(deckname).length > 0) {
 					$.ajax({
                         type: "POST",  //Request type
                         url: platform + "zhang_kevin_project2/adddeck.php",
@@ -128,6 +131,9 @@
 						"<strong>Rating (AVG): </strong>" + rating + "<br>" +
 						"</p>" +
 
+						//deck actions
+						"<div class='deckactions'>" + 
+
 						//button to view deck
 						"<div class='form-group'>" +
 						"<button type='submit' name='view-deck-btn' id='view-deck-" + i + "' class='btn btn-primary btn-block btn-sm view-deck-btn'>View Deck</button>" +
@@ -137,6 +143,9 @@
 						"<div class='form-group'>" +
 						"<button type='submit' name='set-deck-btn' id='set-deck" + i + "' class='btn btn-primary btn-block btn-sm set-deck-btn'>Edit Deck</button>" +
 						"</div>" +
+
+						//close deck actions div
+						"</div>" + 
 
 						"</div>");
 				});
@@ -207,7 +216,7 @@
 			<h3 class="text-center">Your Decks</h3>
 			<div class="form-group">
 				<h6>Deck Name</h6>
-				<input type="text" name="deckname" id="deckname" placeholder="Required" class="form-control form-control-sm" required>
+				<input type="text" name="deckname" id="deckname" placeholder="Required (Max 20 chars)" class="form-control form-control-sm" required>
 			</div>
 			<div class="form-group">
 				<h6>Deck Description</h6>
