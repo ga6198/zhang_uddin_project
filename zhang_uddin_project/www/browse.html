@@ -24,7 +24,7 @@
 	<script type="text/javascript" src="jquery.js"></script>
 
 	<script type="text/javascript">
-		//hold decks
+		//hold decks and ratings
 		var allDecks = []; // list of user deck objects
 
 		//function to get the image for a clan
@@ -61,12 +61,15 @@
 				$.post(url, { deckname: deckname, clan: clan, creator: creator }, function (data, textStatus) {
 					//alert(JSON.stringify(data)); //for debugging
 
+					var decks = data.decks;
+					var ratings = data.ratings;
+
 					//clear any current card search results
 					allDecks = [];
 					//cardSearchResults.length = 0;
 
 					//for each card, print info
-					$.each(data, function (i, field) {
+					$.each(decks, function (i, field) {
 						var deck_id = field.deck_id;
 						var deckname = field.deckname;
 						var description = field.description;
@@ -78,7 +81,13 @@
 						var clan = field.clan;
 						var clanImageDir = getClanImageDirectory(clan);
 
-						var deck = { deck_id: deck_id, deckname: deckname, description: description, clan: clan };
+						var rating = ratings[i].rating_average;
+						// change rating if empty
+						if (rating === "" || rating === null) {
+							rating = "N/A";
+						}
+
+						var deck = { deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating};
 						//push each deck into deck array
 						allDecks.push(deck);
 
@@ -90,7 +99,7 @@
 							"<strong>Deck Name: </strong>" + deckname + "<br>" +
 							"<strong>Clan: </strong>" + clan + "<br>" +
 							"<strong>Creator: </strong>" + creator + "<br>" +
-							//"<strong>Rating: </strong>" + rating + "<br>" +
+							"<strong>Rating (AVG): </strong>" + rating + "<br>" +
 							"</p>" +
 
 							//button to view deck
@@ -100,6 +109,7 @@
 
 							"</div>");
 					});
+
 				}, "json");
 			})
 		});
