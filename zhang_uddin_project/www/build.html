@@ -86,8 +86,12 @@
             var getUserDecksUrl = platform + "zhang_kevin_project2/getUserDecks.php";
 			$.post(getUserDecksUrl, { user_id: user_id }, function (data, textStatus) {
 				//alert(JSON.stringify(data)); //for debugging
+
+				var decks = data.decks;
+				var ratings = data.ratings;
+
 				//for each deck, print contents
-				$.each(data, function (i, field) {
+				$.each(decks, function (i, field) {
 
 					var deck_id = field.deck_id;
 					var deckname = field.deckname;
@@ -100,7 +104,16 @@
 					var clan = field.clan;
 					var clanImageDir = getClanImageDirectory(clan);
 
-					var deck = { deck_id: deck_id, deckname: deckname, description: description, clan: clan };
+					var rating = ratings[i].rating_average;
+					// change rating if empty
+					if (rating === "" || rating === null) {
+						rating = "N/A";
+					}
+					else {
+						rating = rating.toPrecision(2);
+					}
+
+					var deck = { deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating};
 					//push each deck into user deck array
 					//alert(JSON.stringify(deck)); //for debugging
 					userDecks.push(deck);
@@ -112,7 +125,7 @@
 						"<strong>Deck Name: </strong>" + deckname + "<br>" +
 						"<strong>Clan: </strong>" + clan + "<br>" +
 						"<strong>Creator: </strong>" + creator + "<br>" +
-						//"<strong>Rating: </strong>" + rating + "<br>" +
+						"<strong>Rating (AVG): </strong>" + rating + "<br>" +
 						"</p>" +
 
 						//button to view deck

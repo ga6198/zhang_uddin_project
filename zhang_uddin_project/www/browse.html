@@ -86,6 +86,9 @@
 						if (rating === "" || rating === null) {
 							rating = "N/A";
 						}
+						else {
+							rating = rating.toPrecision(2);
+						}
 
 						var deck = { deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating};
 						//push each deck into deck array
