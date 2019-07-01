@@ -84,6 +84,9 @@
 				//alert(JSON.stringify(deck));
 				//alert(JSON.stringify(cards));
 
+				//save current cards to session
+				sessionStorage.setItem('viewdeckcards', JSON.stringify(cards));
+
 				//populate deck of cards
 				$.each(cards, function (i, field) {
 

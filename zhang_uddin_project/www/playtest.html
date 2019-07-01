@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+
+	<!-- Bootstrap -->
+	<!--
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	-->
+	<link rel="stylesheet" type="text/css" href="bootstrap-4.1.3-dist/css/bootstrap.min.css" />
+	<script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
+
+	<link rel="stylesheet" href="css/style.css">
+
+	<script type="text/javascript" src="jquery.js"></script>
+
+	<script type="text/javascript">
+		//function to shuffle cards array
+		function shuffle(array) {
+			var currentIndex = array.length, temporaryValue, randomIndex;
+
+			// While there remain elements to shuffle...
+			while (0 !== currentIndex) {
+
+				// Pick a remaining element...
+				randomIndex = Math.floor(Math.random() * currentIndex);
+				currentIndex -= 1;
+
+				// And swap it with the current element.
+				temporaryValue = array[currentIndex];
+				array[currentIndex] = array[randomIndex];
+				array[randomIndex] = temporaryValue;
+			}
+
+			return array;
+		}
+
+		function displayStartingHand(deck) {
+			deckWithoutG4s = [];
+			// remove grade 4 g units and g guardians
+			$.each(deck, function (i, field) {
+				//alert(JSON.stringify(field));
+
+				grade = field.grade
+
+				if (!grade.includes("Triple Drive") && !grade.includes("G-Guardian")) {
+					deckWithoutG4s.push(field);
+				}
+			});
+			//alert(JSON.stringify(deckWithoutG4s));
+
+			//shuffle deck
+			deckWithoutG4s = shuffle(deckWithoutG4s);
+
+			// number of cards to print. Mainly handles if there are less than 5 cards
+			numCardsToPrint = deckWithoutG4s.length;
+			// if more than 5 cards, reduce to 5 cards
+			if (numCardsToPrint > 5) {
+				numCardsToPrint = 5;
+			}
+
+			//print first 5 cards
+			for (i = 0; i < numCardsToPrint; i++) {
+				//get image data
+				var imageFile = deckWithoutG4s[i].imageFile;
+				// if image doesn't end in jpg, add jpg
+				if (!imageFile.endsWith(".jpg")) {
+					imageFile = imageFile + ".jpg";
+				}
+
+				var imagePath = "vanguardImages/" + imageFile;
+				var onErrorPath = "vanguardImages/cfv_back.jpg";
+
+				//print cards
+				$(".row").append(
+					"<div class='cardinfo'>" +
+					"<img src='" + imagePath + "' class='rounded' onerror=this.src='" + onErrorPath + "' style='width:100%'>" +
+					"</div>");
+			}
+		}
+
+		//SESSION VARIABLES
+
+		//get user id from session
+		var user_id = sessionStorage.getItem('user_id');
+		user_id = parseInt(user_id);
+
+		//get view deck info from session
+		var viewdeck = sessionStorage.getItem('viewdeck');
+		//alert(viewdeck);
+		viewdeck = JSON.parse(viewdeck);
+
+		//get view deck cards info from session
+		var viewdeckcards = sessionStorage.getItem('viewdeckcards');
+		//alert(viewdeck);
+		viewdeckcards = JSON.parse(viewdeckcards);
+
+
+
+		$(document).ready(function () {
+			document.getElementById("added-deck").innerHTML = "Five card starting hand for: " + viewdeck.deckname;
+
+			displayStartingHand(viewdeckcards);
+		})
+
+		// command for draw cards button
+		$(document).on("click", ".playtest-btn", function () {
+			// clear previous starting hand
+			$(".row").empty();
+
+			//draw another hand
+			displayStartingHand(viewdeckcards);
+		});
+	</script>
+
+	<title>View Decks</title>
+</head>
+
+<body>
+	<header class="site-header">
+		<div class="container">
+			<h1>Vanguard Deck Builder</h1>
+		</div>
+	</header>
+
+	<nav class="site-nav">
+		<div class="container">
+			<ul>
+				<li><a href="browse.html">Browse Decks</a></li>
+				<li><a href="build.html">Build Decks</a></li>
+			</ul>
+		</div>
+	</nav>
+	
+	<section class="site-main">
+		<div class="container">
+			<!-- <p id="added-deck"></p> -->
+
+			<h3 id="playtest-title" class="text-center">Playtest</h3>
+
+			<hr />
+
+
+			<p id="added-deck"></p>
+
+			<button class="btn btn-primary btn-sm playtest-btn">Draw Another Hand</button>
+
+			<hr />
+
+			<div class="row">
+
+			</div>
+
+		</div>
+	</section>
+
+	<footer class="site-footer">
+
+		
+	</footer>
+
+</body>
+
+</html>
