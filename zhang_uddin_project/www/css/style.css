@@ -76,7 +76,16 @@
   margin: 0.50%;
   
   overflow-wrap: break-word; /*handling long names and descriptions*/
+
+  position: relative;
+  min-height: 515px;
 }
+
+.cardactions {
+	position: absolute;
+	bottom: 0;
+	left: 2.5%;
+} 
 
 .row::after {
   content: "";
