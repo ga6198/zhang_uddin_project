@@ -30,5 +30,18 @@
         // TODO: This application has been reactivated. Restore application state here.
     };
 
+    //logout events
+    document.getElementById("logout").addEventListener("click", logout);
+
+    function logout() {
+        //return user to login page
+        location.href = "index.html";
+        //location.href = "../index.html";
+
+        //clear session variables
+        sessionStorage.clear();
+
+        //alert("Your logout function worked");
+    };
 
 } )();
