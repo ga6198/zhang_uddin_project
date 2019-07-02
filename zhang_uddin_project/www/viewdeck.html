@@ -58,6 +58,14 @@
 		//alert(viewdeck);
 		viewdeck = JSON.parse(viewdeck);
 
+		//get user id from session
+		var user_id = sessionStorage.getItem('user_id');
+		user_id = parseInt(user_id);
+		//if user id not set, return to login
+		if (user_id === null || isNaN(user_id)) {
+			location.href = "index.html";
+		}
+
 		//hold cards in deck
 		var deckCards = [];
 
