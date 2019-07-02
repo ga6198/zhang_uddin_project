@@ -120,6 +120,24 @@
 			//draw another hand
 			displayStartingHand(viewdeckcards);
 		});
+
+		// command for detecting shake
+		shake.startWatch(onShake, onError);
+		
+		var onShake = function () {
+			// Fired when a shake is detected
+			// clear previous starting hand
+			$(".row").empty();
+
+			//draw another hand
+			displayStartingHand(viewdeckcards);
+		};
+
+		var onError = function () {
+			// Fired when there is an accelerometer error (optional)
+			alert("Something went wrong with the shake!");
+		};
+
 	</script>
 
 	<title>View Decks</title>

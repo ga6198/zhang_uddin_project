@@ -32,7 +32,6 @@
 
     //logout events
     document.getElementById("logout").addEventListener("click", logout);
-
     function logout() {
         //return user to login page
         location.href = "index.html";
@@ -44,4 +43,12 @@
         //alert("Your logout function worked");
     };
 
+    //back button event
+    //FIXME: make this return to previous page
+    document.addEventListener("backbutton", onBackKeyDown, false);
+    function onBackKeyDown(e) {
+        // suppress default, which is exiting app
+        e.preventDefault();
+        alert('Back Button is Pressed!');
+    } 
 } )();
