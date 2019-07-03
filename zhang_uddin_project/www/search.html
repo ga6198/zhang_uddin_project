@@ -163,6 +163,9 @@
 				$('html, body').animate({ scrollTop: 0 }, 'fast');
 			});
 
+			//save the current modal globally, so it can be used in close
+			var currentModal = null;
+
 			// command for clicking on image
 			$(document).on("click", ".card-image", function () {
 				//alert("Card clicked!");
@@ -220,12 +223,21 @@
 				modalImage.src = serverImageSource;
 				modalImage.alt = cardName;
 
+				currentModal = modal;
+
+				//modal.style.display = "none";
+
 				//add close button using span
-				var span = document.getElementsByClassName("close")[0];
+				/*var span = document.getElementsByClassName("close")[0];
 				$(document).on("click", span, function () {
 					modal.style.display = "none";
-				});
+				});*/
 			}); 
+
+			$(document).on("click", ".close", function () {
+				var modal = currentModal;
+				modal.style.display = "none";
+			});
 		})
 
 	</script>
