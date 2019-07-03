@@ -165,15 +165,16 @@
 
 			// command for clicking on image
 			$(document).on("click", ".card-image", function () {
+				//alert("Card clicked!");
 				var currentCardId = this.id;
 				currentCardId = currentCardId.split('-')[2]; //get last number in id
 				//convert id string to int
 				currentCardId = parseInt(currentCardId);
 
 				// get card ids
-				var cardImageId = "#card-image-" + currentCardId;
-				var cardModalId = "#card-modal-" + currentCardId;
-				var modalImageId = "#modal-image-" + currentCardId;
+				var cardImageId = "card-image-" + currentCardId;
+				var cardModalId = "card-modal-" + currentCardId;
+				var modalImageId = "modal-image-" + currentCardId;
 
 				// get modal
 				var modal = document.getElementById(cardModalId);
@@ -182,9 +183,48 @@
 				//FIXME: refactor cardImage to use ajax post that gets big image from server
 				var cardImage = document.getElementById(cardImageId);
 
+				// prepare card info for server request
+				var cardName = this.alt;
+				var cardImageSource = this.src;
+				// get last part of source, which is the file name
+				var sourceParts = cardImageSource.split('/');
+				var cardFileName = sourceParts.pop() || sourceParts.pop();
+
+				// get larger image from server
+				var serverImageSource = platform + "zhang_kevin_project2/vanguardImages/" + cardFileName; 
+				//alert(serverImageSource);
+				//var serverImage = $("<img />").attr('src', serverImageSource);
+				var serverCardId = "server-card-" + currentCardId;
+				/*var serverImage = $('<img />').attr({
+					'id': serverCardId,
+					'src': serverImageSource,
+					'alt': cardName,
+					'class': 'nodisplay'
+				});*/
+				//var serverImage = document.createElement('img');
+				//serverImage.src = serverImageSource;
+				//serverImage.alt = cardName;
+				//document.body.appendChild(serverImage);
+
+				//alert(JSON.stringify(serverImage));
+
+				//alert(serverImage.src);
+
+				//img = document.getElementById(serverCardId);
+				//alert(img);
+
 				var modalImage = document.getElementById(modalImageId);
 				modal.style.display = "block";
-				modalImage.src = this.src;
+				//modalImage.src = this.src;
+				//modalImage.src = serverImage.src;
+				modalImage.src = serverImageSource;
+				modalImage.alt = cardName;
+
+				//add close button using span
+				var span = document.getElementsByClassName("close")[0];
+				$(document).on("click", span, function () {
+					modal.style.display = "none";
+				});
 			}); 
 		})
 
