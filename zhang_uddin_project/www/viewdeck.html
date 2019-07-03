@@ -218,7 +218,8 @@
 			// command for the remove card button
 			$(document).on("click", ".remove-card-btn", function () {
 				var currentCardId = this.id;
-				currentCardId = currentCardId[currentCardId.length - 1]; //get last character of array (the number)
+				//currentCardId = currentCardId[currentCardId.length - 1]; //get last character of array (the number)
+				currentCardId = currentCardId.split('-')[2]; //get last number in id
 				//convert id string to int
 				currentCardId = parseInt(currentCardId);
 

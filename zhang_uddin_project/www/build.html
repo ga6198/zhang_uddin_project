@@ -156,7 +156,8 @@
 			//check the id
 			//alert(this.id);
 			var currentDeckId = this.id;
-			currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			//currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			currentCardId = currentCardId.split('-')[2]; //get last number in id
 			//convert id string to int
 			currentDeckId = parseInt(currentDeckId);
 
@@ -173,7 +174,8 @@
 		// command for the edit deck button
 		$(document).on("click", ".set-deck-btn", function () {
 			var currentDeckId = this.id;
-			currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			//currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			currentCardId = currentCardId.split('-')[2]; //get last number in id
 			//convert id string to int
 			currentDeckId = parseInt(currentDeckId);
 
