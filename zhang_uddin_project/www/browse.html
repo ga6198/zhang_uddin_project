@@ -151,79 +151,91 @@
 </head>
 
 <body>
-	<header class="site-header">
-		<div class="container">
-			<h1>Vanguard Deck Builder</h1>
-		</div>
-	</header>
+    <header class="site-header">
+        <div class="container">
+            <h1>Vanguard Deck Builder</h1>
+        </div>
+    </header>
 
-	<nav class="site-nav">
-		<div class="container">
-			<ul>
-				<li><a href="browse.html">Browse Decks</a></li>
-				<li><a href="build.html">Build Decks</a></li>
-				<li><a id="logout">Logout</a></li>
-			</ul>
-		</div>
-	</nav>
+    <!-- OLD NAV
+        <nav class="site-nav">
+        <div class="container">
+            <ul>
+                <li><a href="browse.html">Browse Decks</a></li>
+                <li><a href="build.html">Build Decks</a></li>
+                <li><a id="logout">Logout</a></li>
+            </ul>
+        </div>
+    </nav>-->
 
-	<section class="site-main">
-		<div class="container">
-			<h3 class="text-center">All Decks</h3>
+    <div class="site-nav">
+        <div id="sideMenu" class="sidemenu">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeSideMenu()">&times;</a>
+            <a href="browse.html">Browse Decks</a>
+            <a href="build.html">Build Decks</a>
+            <a id="logout">Logout</a>
+        </div>
 
-			<div class="form-group">
-				<h6>Deck Name</h6>
-				<input type="text" name="deckname" id="deckname" class="form-control form-control-sm">
-			</div>
-			<div class="form-group">
-				<h6>Clan</h6>
-				<select name='clan' id="clan">
-					<option value='%'>Any</option>
-					<option value='Angel Feather'>Angel Feather</option>
-					<option value='Aqua Force'>Aqua Force</option>
-					<option value='Bermuda Triangle'>Bermuda Triangle</option>
-					<option value='Dark Irregulars'>Dark Irregulars</option>
-					<option value='Dimension Police'>Dimension Police</option>
-					<option value='Gear Chronicle'>Gear Chronicle</option>
-					<option value='Genesis'>Genesis</option>
-					<option value='Gold Paladin'>Gold Paladin</option>
-					<option value='Granblue'>Granblue</option>
-					<option value='Great Nature'>Great Nature</option>
-					<option value='Kagero'>Kagero</option>
-					<option value='Link Joker'>Link Joker</option>
-					<option value='Megacolony'>Megacolony</option>
-					<option value='Murakumo'>Murakumo</option>
-					<option value='Narukami'>Narukami</option>
-					<option value='Neo Nectar'>Neo Nectar</option>
-					<option value='Nova Grappler'>Nova Grappler</option>
-					<option value='Nubatama'>Nubatama</option>
-					<option value='Oracle Think Tank'>Oracle Think Tank</option>
-					<option value='Pale Moon'>Pale Moon</option>
-					<option value='Royal Paladin'>Royal Paladin</option>
-					<option value='Shadow Paladin'>Shadow Paladin</option>
-					<option value='Spike Brothers'>Spike Brothers</option>
-					<option value='Tachikaze'>Tachikaze</option>
-				</select>
-			</div>
-			<div class="form-group">
-				<h6>Creator</h6>
-				<input type="text" name="creator" id="creator" class="form-control form-control-sm">
-			</div>
-			<div class="form-group">
-				<button type="submit" name="deck-search-btn" id="deck-search-btn" class="btn btn-primary btn-block btn-lg">Search Decks</button>
-			</div>
+        <span onclick="openSideMenu()" id="sideBarButton">&#9776</span>
+    </div>
 
-			<div class="row">
-				<!-- <div id="decks"></div> -->
-			</div>
-		</div>
-	</section>
+    <section class="site-main">
+        <div class="container">
+            <h3 class="text-center">All Decks</h3>
 
-	<footer class="site-footer"></footer>
+            <div class="form-group">
+                <h6>Deck Name</h6>
+                <input type="text" name="deckname" id="deckname" class="form-control form-control-sm">
+            </div>
+            <div class="form-group">
+                <h6>Clan</h6>
+                <select name='clan' id="clan">
+                    <option value='%'>Any</option>
+                    <option value='Angel Feather'>Angel Feather</option>
+                    <option value='Aqua Force'>Aqua Force</option>
+                    <option value='Bermuda Triangle'>Bermuda Triangle</option>
+                    <option value='Dark Irregulars'>Dark Irregulars</option>
+                    <option value='Dimension Police'>Dimension Police</option>
+                    <option value='Gear Chronicle'>Gear Chronicle</option>
+                    <option value='Genesis'>Genesis</option>
+                    <option value='Gold Paladin'>Gold Paladin</option>
+                    <option value='Granblue'>Granblue</option>
+                    <option value='Great Nature'>Great Nature</option>
+                    <option value='Kagero'>Kagero</option>
+                    <option value='Link Joker'>Link Joker</option>
+                    <option value='Megacolony'>Megacolony</option>
+                    <option value='Murakumo'>Murakumo</option>
+                    <option value='Narukami'>Narukami</option>
+                    <option value='Neo Nectar'>Neo Nectar</option>
+                    <option value='Nova Grappler'>Nova Grappler</option>
+                    <option value='Nubatama'>Nubatama</option>
+                    <option value='Oracle Think Tank'>Oracle Think Tank</option>
+                    <option value='Pale Moon'>Pale Moon</option>
+                    <option value='Royal Paladin'>Royal Paladin</option>
+                    <option value='Shadow Paladin'>Shadow Paladin</option>
+                    <option value='Spike Brothers'>Spike Brothers</option>
+                    <option value='Tachikaze'>Tachikaze</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <h6>Creator</h6>
+                <input type="text" name="creator" id="creator" class="form-control form-control-sm">
+            </div>
+            <div class="form-group">
+                <button type="submit" name="deck-search-btn" id="deck-search-btn" class="btn btn-primary btn-block btn-lg">Search Decks</button>
+            </div>
 
-	<script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="scripts/platformOverrides.js"></script>
-	<script type="text/javascript" src="scripts/index.js"></script>
+            <div class="row">
+                <!-- <div id="decks"></div> -->
+            </div>
+        </div>
+    </section>
+
+    <footer class="site-footer"></footer>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
 </body>
 
 </html>

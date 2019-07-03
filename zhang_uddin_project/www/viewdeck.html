@@ -272,79 +272,91 @@
 </head>
 
 <body>
-	<header class="site-header">
-		<div class="container">
-			<h1>Vanguard Deck Builder</h1>
-		</div>
-	</header>
+    <header class="site-header">
+        <div class="container">
+            <h1>Vanguard Deck Builder</h1>
+        </div>
+    </header>
 
-	<nav class="site-nav">
-		<div class="container">
-			<ul>
-				<li><a href="browse.html">Browse Decks</a></li>
-				<li><a href="build.html">Build Decks</a></li>
-				<li><a id="logout">Logout</a></li>
-			</ul>
-		</div>
-	</nav>
+    <!-- OLD NAV
+         <nav class="site-nav">
+         <div class="container">
+             <ul>
+                 <li><a href="browse.html">Browse Decks</a></li>
+                 <li><a href="build.html">Build Decks</a></li>
+                 <li><a id="logout">Logout</a></li>
+             </ul>
+         </div>
+     </nav>-->
 
-	<section class="site-main">
-		<div class="container">
-			<!-- <p id="added-deck"></p> -->
+    <div class="site-nav">
+        <div id="sideMenu" class="sidemenu">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeSideMenu()">&times;</a>
+            <a href="browse.html">Browse Decks</a>
+            <a href="build.html">Build Decks</a>
+            <a id="logout">Logout</a>
+        </div>
 
-			<h3 id="added-deck" class="text-center"></h3>
+        <span onclick="openSideMenu()" id="sideBarButton">&#9776</span>
+    </div>
 
-			<hr />
+    <section class="site-main">
+        <div class="container">
+            <!-- <p id="added-deck"></p> -->
 
-			Description: <p id="desc"></p>
+            <h3 id="added-deck" class="text-center"></h3>
 
-			<hr />
+            <hr />
 
-			<p class="text-center">Rate/Comment</p>
-			<div class="form-group" id="number-rating">
-				<select name='rating' id="rating" class="text-center">
-					<option value='1'>1 (lowest)</option>
-					<option value='2'>2</option>
-					<option value='3'>3</option>
-					<option value='4'>4</option>
-					<option value='5'>5 (highest)</option>
-				</select>
-				<button type="submit" name="rating-btn" id="rating-btn" class="btn btn-primary btn-sm rating-btn">Post Rating</button>
-			</div>
-			<p id="review-score"></p>
+            Description: <p id="desc"></p>
 
-			<hr />
+            <hr />
 
-			<button class="btn btn-primary btn-sm decklist-btn">Show Decklist</button>
-			<div class="decklist nodisplay">
-				<p>Grade 0:</p>
-				<ul id="g0-list"></ul>
-				<p>Grade 1:</p>
-				<ul id="g1-list"></ul>
-				<p>Grade 2:</p>
-				<ul id="g2-list"></ul>
-				<p>Grade 3:</p>
-				<ul id="g3-list"></ul>
-				<p>Grade 4:</p>
-				<ul id="g4-list"></ul>
-			</div>
+            <p class="text-center">Rate/Comment</p>
+            <div class="form-group" id="number-rating">
+                <select name='rating' id="rating" class="text-center">
+                    <option value='1'>1 (lowest)</option>
+                    <option value='2'>2</option>
+                    <option value='3'>3</option>
+                    <option value='4'>4</option>
+                    <option value='5'>5 (highest)</option>
+                </select>
+                <button type="submit" name="rating-btn" id="rating-btn" class="btn btn-primary btn-sm rating-btn">Post Rating</button>
+            </div>
+            <p id="review-score"></p>
 
-			<button class="btn btn-primary btn-sm playtest-btn">Draw Starting Hand</button>
+            <hr />
 
-			<hr />
+            <button class="btn btn-primary btn-sm decklist-btn">Show Decklist</button>
+            <div class="decklist nodisplay">
+                <p>Grade 0:</p>
+                <ul id="g0-list"></ul>
+                <p>Grade 1:</p>
+                <ul id="g1-list"></ul>
+                <p>Grade 2:</p>
+                <ul id="g2-list"></ul>
+                <p>Grade 3:</p>
+                <ul id="g3-list"></ul>
+                <p>Grade 4:</p>
+                <ul id="g4-list"></ul>
+            </div>
 
-			<div class="row">
+            <button class="btn btn-primary btn-sm playtest-btn">Draw Starting Hand</button>
 
-			</div>
+            <hr />
 
-		</div>
-	</section>
+            <div class="row">
 
-	<footer class="site-footer"></footer>
+            </div>
 
-	<script type="text/javascript" src="cordova.js"></script>
-	<script type="text/javascript" src="scripts/platformOverrides.js"></script>
-	<script type="text/javascript" src="scripts/index.js"></script>
+        </div>
+    </section>
+
+    <footer class="site-footer"></footer>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
+    <script type="text/javascript" src="scripts/index.js"></script>
 
 </body>
 

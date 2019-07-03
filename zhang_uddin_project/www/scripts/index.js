@@ -51,4 +51,13 @@
         e.preventDefault();
         alert('Back Button is Pressed!');
     } 
-} )();
+})();
+
+function openSideMenu() {
+    document.getElementById("sideMenu").style.width = "250px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeSideMenu() {
+    document.getElementById("sideMenu").style.width = "0";
+}
