@@ -139,7 +139,7 @@
 
 						//button to edit deck
 						"<div class='form-group'>" +
-						"<button type='submit' name='set-deck-btn' id='set-deck" + i + "' class='btn btn-primary btn-block btn-sm set-deck-btn'>Edit Deck</button>" +
+						"<button type='submit' name='set-deck-btn' id='set-deck-" + i + "' class='btn btn-primary btn-block btn-sm set-deck-btn'>Edit Deck</button>" +
 						"</div>" +
 
 						"</div>");
@@ -157,7 +157,7 @@
 			//alert(this.id);
 			var currentDeckId = this.id;
 			//currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
-			currentCardId = currentCardId.split('-')[2]; //get last number in id
+			currentDeckId = currentDeckId.split('-')[2]; //get last number in id
 			//convert id string to int
 			currentDeckId = parseInt(currentDeckId);
 
@@ -175,7 +175,7 @@
 		$(document).on("click", ".set-deck-btn", function () {
 			var currentDeckId = this.id;
 			//currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
-			currentCardId = currentCardId.split('-')[2]; //get last number in id
+			currentDeckId = currentDeckId.split('-')[2]; //get last number in id
 			//convert id string to int
 			currentDeckId = parseInt(currentDeckId);
 

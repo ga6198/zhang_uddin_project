@@ -66,7 +66,6 @@
 				var clan = $("#clan").val();
 				var grade = $("#grade").val();
 
-
 				var searchCardsUrl = platform + "zhang_kevin_project2/searchcards.php";
 				$.post(searchCardsUrl, { cardname: cardname, clan: clan, grade: grade }, function (data, textStatus) {
 					//alert(JSON.stringify(data)); //for debugging
@@ -101,14 +100,14 @@
 						$(".row").append(
 							//card info
 							"<div class='cardinfo'>" +
-							"<img src='" + imagePath + "' id='image-" + i + "' class='card-image rounded' alt='" + name + "' onerror=this.src='" + onErrorPath + "' style='width:100%'>" +
-
+							"<img src='" + imagePath + "' id='card-image-" + i + "' class='card-image rounded' alt='" + name + "' onerror=this.src='" + onErrorPath + "' style='width:100%'>" +
+							
 							//modal div
-							"<div id= 'modal-" + i + "' class='modal' >" +
+							"<div id= 'card-modal-" + i + "' class='modal' >" +
 							"<span class='close'>&times;</span>" +
 							"<img id='modal-image-" + i + "' class='modal-content'>" +
 							"</div>" +
-
+							
 							"<p>" +
 							"<strong>Name: </strong>" + name + "<br>" +
 							"<strong>Clan: </strong>" + clan + "<br>" +
@@ -166,8 +165,27 @@
 
 			// command for clicking on image
 			$(document).on("click", ".card-image", function () {
+				var currentCardId = this.id;
+				currentCardId = currentCardId.split('-')[2]; //get last number in id
+				//convert id string to int
+				currentCardId = parseInt(currentCardId);
 
-			});
+				// get card ids
+				var cardImageId = "#card-image-" + currentCardId;
+				var cardModalId = "#card-modal-" + currentCardId;
+				var modalImageId = "#modal-image-" + currentCardId;
+
+				// get modal
+				var modal = document.getElementById(cardModalId);
+
+				//insert image into modal 
+				//FIXME: refactor cardImage to use ajax post that gets big image from server
+				var cardImage = document.getElementById(cardImageId);
+
+				var modalImage = document.getElementById(modalImageId);
+				modal.style.display = "block";
+				modalImage.src = this.src;
+			}); 
 		})
 
 	</script>
