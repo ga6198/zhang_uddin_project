@@ -193,26 +193,6 @@
 						cardSet.shift();
 					}
 				});
-
-				/*
-				//hold cards sorted by grade
-				var sortedGrades = [];
-
-				// object of arrays, that sorts cards by grade
-				var deckByGrade = groupBy(deckCards, 'grade');
-				alert(JSON.stringify(deckByGrade));
-				// iterate to get array of cards in each grade
-				$.each(deckByGrade, function (i, field) {
-					alert(JSON.stringify(field));
-					var cardsByGrade = field;
-
-					var sortedCardGrade = sortObj(cardsByGrade, 'name');
-					sortedGrades.push(sortedCardGrade);
-				});
-				alert(JSON.stringify(sortedGrades)); //[[g4][g3][g2]]
-
-				//reorganize grades
-				*/
 			}, "json");
 
 			// command for the remove card button
@@ -266,6 +246,14 @@
 			$(document).on("click", ".playtest-btn", function () {
 				location.href = "playtest.html";
 			});
+
+			// command for the edit deck button
+			$(document).on("click", ".set-deck-btn", function () {
+				//save view deck info into session variables
+				sessionStorage.setItem('setdeck', JSON.stringify(viewdeck));
+
+				location.href = "search.html";
+			});
 		})
 	</script>
 
@@ -298,6 +286,12 @@
 			<hr />
 
 			Description: <p id="desc"></p>
+
+			<hr />
+
+			<div class='form-group'>
+				<button class="btn btn-primary btn-sm set-deck-btn">Edit Deck</button>
+			</div>
 
 			<hr />
 
