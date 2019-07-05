@@ -1,0 +1,9 @@
+Debugging on Android Device
+1. Follow the guide on Xamarin Debugging through Android.
+2. Choose "Device" when debugging through Visual Studio
+3. chrome://inspect/#devices will help you analyze requests. You can directly add input here.
+
+Connection to WAMP through phone VERY IMPORTANT
+https://stackoverflow.com/questions/39338660/android-you-dont-have-permission-to-access-on-this-server-wamp
+1. modify httpd.conf by replacing the "Require" statement with "Require all granted"
+2. do the same with httpd-vhost.conf
