@@ -129,7 +129,14 @@
 					//alert(JSON.stringify(field));
 					$(".row").append(
 						"<div class='cardinfo'>" +
-						"<img src='" + field.imagePath + "' class='rounded' alt='" + field.name + "' onerror=this.src='" + field.onErrorPath + "' style='width:100%'>" +
+						"<img src='" + field.imagePath + "' id='card-image-" + i + "' class='card-image rounded' alt='" + field.name + "' onerror=this.src='" + field.onErrorPath + "' style='width:100%'>" +
+
+						//modal div
+						"<div id= 'card-modal-" + i + "' class='modal' >" +
+						"<span class='close'>&times;</span>" +
+						"<img id='modal-image-" + i + "' class='modal-content'>" +
+						"</div>" +
+
 						"<p>" +
 						"<strong>Name: </strong>" + field.name + "<br>" +
 						"<strong>Clan: </strong>" + field.clan + "<br>" +
@@ -253,6 +260,53 @@
 				sessionStorage.setItem('setdeck', JSON.stringify(viewdeck));
 
 				location.href = "search.html";
+			});
+
+			//save the current modal globally, so it can be used in close
+			var currentModal = null;
+
+			// command for clicking on image
+			$(document).on("click", ".card-image", function () {
+				//alert("Card clicked!");
+				var currentCardId = this.id;
+				currentCardId = currentCardId.split('-')[2]; //get last number in id
+				//convert id string to int
+				currentCardId = parseInt(currentCardId);
+
+				// get card ids
+				var cardImageId = "card-image-" + currentCardId;
+				var cardModalId = "card-modal-" + currentCardId;
+				var modalImageId = "modal-image-" + currentCardId;
+
+				// get modal
+				var modal = document.getElementById(cardModalId);
+
+				//insert image into modal 
+				//FIXME: refactor cardImage to use ajax post that gets big image from server
+				var cardImage = document.getElementById(cardImageId);
+
+				// prepare card info for server request
+				var cardName = this.alt;
+				var cardImageSource = this.src;
+				// get last part of source, which is the file name
+				var sourceParts = cardImageSource.split('/');
+				var cardFileName = sourceParts.pop() || sourceParts.pop();
+
+				// get larger image from server
+				var serverImageSource = platform + "zhang_kevin_project2/vanguardImages/" + cardFileName;
+				var serverCardId = "server-card-" + currentCardId;
+
+				var modalImage = document.getElementById(modalImageId);
+				modal.style.display = "block";
+				modalImage.src = serverImageSource;
+				modalImage.alt = cardName;
+
+				currentModal = modal;
+			});
+
+			$(document).on("click", ".close", function () {
+				var modal = currentModal;
+				modal.style.display = "none";
 			});
 		})
 	</script>

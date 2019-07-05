@@ -195,43 +195,14 @@
 
 				// get larger image from server
 				var serverImageSource = platform + "zhang_kevin_project2/vanguardImages/" + cardFileName; 
-				//alert(serverImageSource);
-				//var serverImage = $("<img />").attr('src', serverImageSource);
 				var serverCardId = "server-card-" + currentCardId;
-				/*var serverImage = $('<img />').attr({
-					'id': serverCardId,
-					'src': serverImageSource,
-					'alt': cardName,
-					'class': 'nodisplay'
-				});*/
-				//var serverImage = document.createElement('img');
-				//serverImage.src = serverImageSource;
-				//serverImage.alt = cardName;
-				//document.body.appendChild(serverImage);
-
-				//alert(JSON.stringify(serverImage));
-
-				//alert(serverImage.src);
-
-				//img = document.getElementById(serverCardId);
-				//alert(img);
 
 				var modalImage = document.getElementById(modalImageId);
 				modal.style.display = "block";
-				//modalImage.src = this.src;
-				//modalImage.src = serverImage.src;
 				modalImage.src = serverImageSource;
 				modalImage.alt = cardName;
 
 				currentModal = modal;
-
-				//modal.style.display = "none";
-
-				//add close button using span
-				/*var span = document.getElementsByClassName("close")[0];
-				$(document).on("click", span, function () {
-					modal.style.display = "none";
-				});*/
 			}); 
 
 			$(document).on("click", ".close", function () {
