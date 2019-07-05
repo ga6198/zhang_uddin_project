@@ -321,15 +321,27 @@
 		</div>
 	</header>
 
-	<nav class="site-nav">
-		<div class="container">
-			<ul>
-				<li><a href="browse.html">Browse Decks</a></li>
-				<li><a href="build.html">Build Decks</a></li>
-				<li><a id="logout">Logout</a></li>
-			</ul>
+	<!-- OLD NAV
+		 <nav class="site-nav">
+		 <div class="container">
+			 <ul>
+				 <li><a href="browse.html">Browse Decks</a></li>
+				 <li><a href="build.html">Build Decks</a></li>
+				 <li><a id="logout">Logout</a></li>
+			 </ul>
+		 </div>
+	 </nav>-->
+
+	<div class="site-nav">
+		<div id="sideMenu" class="sidemenu">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeSideMenu()">&times;</a>
+			<a href="browse.html">Browse Decks</a>
+			<a href="build.html">Build Decks</a>
+			<a id="logout">Logout</a>
 		</div>
-	</nav>
+
+		<span onclick="openSideMenu()" id="sideBarButton">&#9776</span>
+	</div>
 
 	<section class="site-main">
 		<div class="container">
