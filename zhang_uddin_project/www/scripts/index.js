@@ -51,6 +51,46 @@
         e.preventDefault();
         alert('Back Button is Pressed!');
     } 
+
+    //camera button event
+    document.getElementById("upload-picture-camera").addEventListener("click", cameraTakePicture);
+    function cameraTakePicture() {
+        navigator.camera.getPicture(onSuccess, onFail, {
+            quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL
+        });
+
+        function onSuccess(imageData) {
+            //var image = document.getElementById('myImage');
+            //image.src = "data:image/jpeg;base64," + imageData;
+            alert(imageData);
+        }
+
+        function onFail(message) {
+            alert('Failed because: ' + message);
+        }
+    }
+
+    //gallery button event
+    document.getElementById("upload-picture-gallery").addEventListener("click", cameraGetPicture); 
+    function cameraGetPicture() {
+        navigator.camera.getPicture(onSuccess, onFail, {
+            quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+        });
+
+        function onSuccess(imageURL) {
+            //var image = document.getElementById('myImage');
+            //image.src = imageURL;
+            alert(imageURL);
+        }
+
+        function onFail(message) {
+            alert('Failed because: ' + message);
+        }
+
+    }
 })();
 
 function openSideMenu() {
