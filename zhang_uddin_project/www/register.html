@@ -68,8 +68,6 @@
 							cache: false,
 							success: function (result) {
 								if (result === "registration success") {
-									location.href = "browse.html";
-
 									//get json for userinfo and save in session
 									// save user info to session
 									var url = platform + "zhang_kevin_project2/getUserInfo.php";
@@ -93,6 +91,10 @@
 										sessionStorage.setItem("user_id", id.toString(10));
 										sessionStorage.setItem("username", currentUsername);
 									}, "json");
+
+									location.href = "browse.html";
+
+									alert("Registered. You may log in now");
 								}
 								else if (result === "invalid email") {
 									alert("Please enter a valid email");

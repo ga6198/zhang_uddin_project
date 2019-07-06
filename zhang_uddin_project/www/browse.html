@@ -85,6 +85,7 @@
 						if (description === "") {
 							description = "N/A";
 						}
+						var creator_id = field.user_id;
 						var creator = field.username;
 						var clan = field.clan;
 						var clanImageDir = getClanImageDirectory(clan);
@@ -98,7 +99,7 @@
 							rating = rating.toPrecision(2);
 						}
 
-						var deck = { deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating};
+						var deck = { creator_id: creator_id, creator: creator, deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating};
 						//push each deck into deck array
 						allDecks.push(deck);
 
@@ -110,7 +111,7 @@
 							"<p>" +
 							"<strong>Deck Name: </strong>" + deckname + "<br>" +
 							"<strong>Clan: </strong>" + clan + "<br>" +
-							"<strong>Creator: </strong>" + creator + "<br>" +
+							"<strong>Creator: </strong><a href='#' id='author-name-" + i + "' class='author-name'>" + creator + "</a><br>" +
 							"<strong>Rating (AVG): </strong>" + rating + "<br>" +
 							"</p>" +
 
@@ -146,6 +147,20 @@
 			sessionStorage.setItem('viewdeck', JSON.stringify(allDecks[currentDeckId]));
 
 			location.href = "viewanydeck.html";
+		});
+
+		//command for author name link
+		$(document).on("click", ".author-name", function () {
+			var currentDeckId = this.id;
+			//currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			currentDeckId = currentDeckId.split('-')[2]; //get last number in id
+			//convert id string to int
+			currentDeckId = parseInt(currentDeckId);
+
+			//save user info into session variables
+			sessionStorage.setItem('userinfo', JSON.stringify(allDecks[currentDeckId]));
+
+			location.href = "profile.html";
 		});
 	</script>
 

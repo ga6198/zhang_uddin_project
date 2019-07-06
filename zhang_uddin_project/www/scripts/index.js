@@ -61,3 +61,11 @@ function openSideMenu() {
 function closeSideMenu() {
     document.getElementById("sideMenu").style.width = "0";
 }
+
+//function to get the image for a clan
+function getClanImageDirectory(clanName) {
+    //remove spaces
+    var clanNameStripped = clanName.split(' ').join('');
+    var clanImageDir = "vanguardImages/clan/Icon_" + clanNameStripped + ".png";
+    return clanImageDir;
+}

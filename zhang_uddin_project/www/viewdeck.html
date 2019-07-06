@@ -128,10 +128,11 @@
 				$.each(sortedCards, function (i, field) {
 					//alert(JSON.stringify(field));
 					var serverImageSource = platform + "zhang_kevin_project2/" + field.imagePath;
+					var serverErrorSource = platform + "zhang_kevin_project2/" + field.onErrorPath;
 
 					$(".row").append(
 						"<div class='cardinfo'>" +
-						"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' alt='" + field.name + "' onerror=this.src='" + field.onErrorPath + "' style='width:100%'>" +
+						"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' alt='" + field.name + "' onerror=this.src='" + serverErrorSource + "' style='width:100%'>" +
 
 						//modal div
 						"<div id= 'card-modal-" + i + "' class='modal' >" +
