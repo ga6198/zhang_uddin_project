@@ -97,14 +97,16 @@
 						cardSearchResults.push(card);
 
 						var serverImageSource = platform + "zhang_kevin_project2/" + imagePath;
+						var serverErrorSource = platform + "zhang_kevin_project2/" + onErrorPath;
 						//add cardinfo boxes
 						$(".row").append(
 							//card info
 							"<div class='cardinfo'>" +
-							"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' alt='" + name + "' onerror=this.src='" + onErrorPath + "' style='width:100%'>" +
+							"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' alt='" + name + "' onerror=this.src='" + serverErrorSource + "' style='width:100%'>" +
 							
 							//modal div
 							"<div id= 'card-modal-" + i + "' class='modal' >" +
+							"<button type='submit' name='contribute-photo-btn' id='cameraGetPicture' class='btn btn-primary btn-block btn-sm contribute-photo-btn contribute-photo-" + i + " text-center'>Contribute Photo</button>" +
 							"<span class='close'>&times;</span>" +
 							"<img id='modal-image-" + i + "' class='modal-content'>" +
 							"</div>" +
@@ -211,12 +213,27 @@
 				modal.style.display = "none";
 			});
 
+			// command when clicking on deck name
 			$(document).on("click", "#move-to-viewdeck", function () {
 				//save view deck info into session variables
 				sessionStorage.setItem('viewdeck', JSON.stringify(setdeck));
 
 				location.href = "viewdeck.html";
 			});
+
+			// command when clicking on contribute photo button
+			/*$(document).on("click", ".contribute-photo-btn", function () {
+				var currentCardId = this.id;
+				currentCardId = currentCardId.split('-')[2]; //get last number in id
+				//convert id string to int
+				currentCardId = parseInt(currentCardId);
+
+				// get button ids
+				var photoButtonId = "contribute-photo-" + currentCardId;
+				var cards_id = cardSearchResults[currentCardId].cards_id;
+				var cardname = cardSearchResults[currentCardId].name;
+				var cardImageFile = cardSearchResults[currentCardId].imageFile;
+			});*/
 		})
 
 	</script>
@@ -231,7 +248,7 @@
 		</div>
 	</header>
 
-	<nav class="site-nav">
+	<!-- <nav class="site-nav">
 		<div class="container">
 			<ul>
 				<li><a href="browse.html">Browse Decks</a></li>
@@ -239,7 +256,18 @@
 				<li><a id="logout">Logout</a></li>
 			</ul>
 		</div>
-	</nav>
+	</nav> -->
+
+	<div class="site-nav">
+		<div id="sideMenu" class="sidemenu">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeSideMenu()">&times;</a>
+			<a href="browse.html">Browse Decks</a>
+			<a href="build.html">Build Decks</a>
+			<a id="logout">Logout</a>
+		</div>
+
+		<span onclick="openSideMenu()" id="sideBarButton">&#9776</span>
+	</div>
 
 	<section class="site-main">
 		<div class="container">

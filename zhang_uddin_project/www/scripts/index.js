@@ -51,6 +51,22 @@
         e.preventDefault();
         alert('Back Button is Pressed!');
     } 
+
+    function cameraGetPicture() {
+        navigator.camera.getPicture(onSuccess, onFail, {
+            quality: 50,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+        });
+
+        function onSuccess(imageURL) {
+            var picUrl = imageURL;
+        }
+
+        function onFail(message) {
+            alert('Failed because: ' + message);
+        }
+    }
 })();
 
 function openSideMenu() {
