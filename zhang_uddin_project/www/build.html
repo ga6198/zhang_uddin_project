@@ -43,8 +43,8 @@
 			location.href = "index.html";
 		}
 
+        var platform;
         $(document).ready(function () {
-            var platform;
 
             if (navigator.platform.match(/Win32|MacIntel/)) {
                 platform = "http://127.0.0.1/";
@@ -141,7 +141,11 @@
 						//button to edit deck
 						"<div class='form-group'>" +
 						"<button type='submit' name='set-deck-btn' id='set-deck-" + i + "' class='btn btn-primary btn-block btn-sm set-deck-btn'>Edit Deck</button>" +
-						"</div>" +
+                        "</div>" +
+
+                        "<div class='form-group'>" +
+                        "<button type='submit' name='delete-deck-btn' id='delete-deck-" + i + "' class='btn btn-primary btn-block btn-sm delete-deck-btn'>Delete Deck</button>" +
+                        "</div>" +
 
 						"</div>");
 				});
@@ -156,7 +160,7 @@
 			//alert("Clicking on dynamic view button works");
 			//check the id
 			//alert(this.id);
-			var currentDeckId = this.id;
+            var currentDeckId = this.id;
 			//currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
 			currentDeckId = currentDeckId.split('-')[2]; //get last number in id
 			//convert id string to int
@@ -185,7 +189,49 @@
 			sessionStorage.setItem('setdeck', JSON.stringify(userDecks[currentDeckId]));
 
 			location.href = "search.html";
-		});
+        });
+
+        $(document).on("click", ".delete-deck-btn", function () {
+            //alert("Clicking on dynamic view button works");
+            //check the id
+            //alert(this.id);
+            var currentDeckId = this.id;
+            //currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+            currentDeckId = currentDeckId.split('-')[2]; //get last number in id
+            //convert id string to int
+            currentDeckId = parseInt(currentDeckId);
+
+            var r = confirm("Are you sure you want to delete this deck?");
+            if (r == true) {
+                // user_id currentDeckId
+                $.ajax({
+                    type: "POST",  //Request type
+                    url: platform + "zhang_kevin_project2/deletedeck.php",
+                    data: { user_id: user_id, deckId: currentDeckId},
+                    //dataType: text, // for debugging
+                    crossDomain: true,
+                   /* beforeSend: function (xhr) {
+                        xhr.withCredentials = true;
+                    },
+                    cache: false,
+                    error: function (jqxhr, status, exception) {
+                        alert('Exception:', exception);
+                    },*/
+                    success: function (result) {
+                        if (result === "Success") {
+                            alert("Delete was successful");
+                            location.href = "build.html";
+                        }
+                        else if (result === "Error") {
+                            alert("error happened");
+                        }
+                        else if (result === "Errors") {
+                            alert("more errors happened");
+                        }
+                    }
+                })
+            }
+        });
 	</script>
 
 	<title>Build Decks</title>
