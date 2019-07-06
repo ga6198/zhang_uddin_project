@@ -122,9 +122,10 @@
 					//alert(JSON.stringify(deck)); //for debugging
 					userDecks.push(deck);
 
+					var serverImageSource = platform + "zhang_kevin_project2/" + clanImageDir;
 					$(".row").append(
 						"<div class='deckinfo'>" +
-						"<img src='" + clanImageDir + "' class='rounded' alt='" + clan + "' style='width:100%'" +
+						"<img src='" + serverImageSource + "' class='rounded' alt='" + clan + "' style='width:100%'" +
 						"<p>" +
 						"<strong>Deck Name: </strong>" + deckname + "<br>" +
 						"<strong>Clan: </strong>" + clan + "<br>" +
