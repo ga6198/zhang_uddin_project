@@ -96,11 +96,12 @@
 						var card = { cards_id: cards_id, name: name, set: set, imageFile: imageFile, clan: clan, grade: grade, type: type, imagePath: imagePath, onErrorPath: onErrorPath };
 						cardSearchResults.push(card);
 
+						var serverImageSource = platform + "zhang_kevin_project2/" + imagePath;
 						//add cardinfo boxes
 						$(".row").append(
 							//card info
 							"<div class='cardinfo'>" +
-							"<img src='" + imagePath + "' id='card-image-" + i + "' class='card-image rounded' alt='" + name + "' onerror=this.src='" + onErrorPath + "' style='width:100%'>" +
+							"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' alt='" + name + "' onerror=this.src='" + onErrorPath + "' style='width:100%'>" +
 							
 							//modal div
 							"<div id= 'card-modal-" + i + "' class='modal' >" +

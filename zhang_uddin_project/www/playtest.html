@@ -82,10 +82,11 @@
 				var imagePath = "vanguardImages/" + imageFile;
 				var onErrorPath = "vanguardImages/cfv_back.jpg";
 
+				var serverImageSource = platform + "zhang_kevin_project2/" + imagePath;
 				//print cards
 				$(".row").append(
 					"<div class='cardinfo'>" +
-					"<img src='" + imagePath + "' id='card-image-" + i + "' class='card-image rounded' onerror=this.src='" + onErrorPath + "' style='width:100%'>" +
+					"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' onerror=this.src='" + onErrorPath + "' style='width:100%'>" +
 
 					//modal div
 					"<div id= 'card-modal-" + i + "' class='modal' >" +
