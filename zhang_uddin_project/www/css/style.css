@@ -116,8 +116,12 @@
   }
 }
 
-.nodisplay{
-	display:none;
+.rating-btn{
+	vertical-align: baseline;
+}
+
+.nodisplay {
+	display: none;
 }
 
 /*---------Modal for increased size image----------*/
@@ -239,4 +243,24 @@
         .sidemenu a {
             font-size: 1.3em;
         }
+}
+
+/*--------Profile picture--------*/
+.profile-picture-container {
+	text-align: center;
+}
+
+.profile-picture-options {
+	display: inline-block;
+}
+
+.profile-picture-options * {
+	padding: 5px;
+}
+
+.avatar {
+	vertical-align: middle;
+	width: 100px;
+	height: 100px;
+	border-radius: 15%;
 }

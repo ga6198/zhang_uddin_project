@@ -75,6 +75,7 @@
 					}
 					var creator_id = field.user_id;
 					var creator = field.username;
+					var creator_pic = field.profile_picture;
 					var clan = field.clan;
 					var clanImageDir = getClanImageDirectory(clan);
 
@@ -87,7 +88,7 @@
 						rating = rating.toPrecision(2);
 					}
 
-					var deck = { creator_id: creator_id, creator: creator, deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating };
+					var deck = { creator_id: creator_id, creator: creator, creator_pic: creator_pic, deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating };
 					//push each deck into user deck array
 					//alert(JSON.stringify(deck)); //for debugging
 					userDecks.push(deck);
@@ -135,6 +136,27 @@
 							"</div>");
 					}
 				});
+
+				//display profile picture
+				//if the current profile has no picture
+				if (userDecks[0].creator_pic == null || userDecks[0].creator_pic == "") {
+					var creator = userDecks[0].creator;
+					var serverDefaultProfile = platform + "zhang_kevin_project2/profileImages/vanguard_blue.jpg"
+					$(".profile-picture").append("<div style='display:inline-block;'><img src='" + serverDefaultProfile + "' alt='" + creator + "' class='avatar center'></div>");
+				}
+				else {
+					var creator = userDecks[0].creator;
+					var creator_pic = userDecks[0].creator_pic;
+					var serverProfile = platform + "zhang_kevin_project2/profileImages/" + creator_pic;
+					$(".profile-picture").append("<img src='" + serverProfile + "' alt='" + creator + "' class='avatar center'>");
+				}
+
+				//display edit picture buttons if user is the profile user
+				if (userDecks[0].creator_id == user_id) {
+					$(".upload-picture-camera").append("<button type='submit' name='camera-picture-btn' id='camera-picture-btn' class='btn btn-primary btn-block btn-sm'>Take Picture</button>");
+					$(".upload-picture-gallery").append("<button type='submit' name='gallery-picture-btn' id='gallery-picture-btn' class='btn btn-primary btn-block btn-sm'>Upload Picture</button>");
+				}
+
 			}, "json");
 		})
 
@@ -215,9 +237,13 @@
 			<hr />
 
 			<h3 class="text-center">Profile Picture</h3>
-			<div class="profile-picture"></div>
-			<div class="upload-picture-camera"></div>
-			<div class="upload-picture-gallery"></div>
+			<div class="profile-picture-container">
+				<div class="profile-picture-options">
+					<div class="profile-picture"></div>
+					<div id="upload-picture-camera" class="upload-picture-camera"></div>
+					<div id="upload-picture-gallery" class="upload-picture-gallery"></div>
+				</div>
+			</div>
 
 			<hr />
 
