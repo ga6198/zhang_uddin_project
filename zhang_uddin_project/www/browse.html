@@ -23,6 +23,8 @@
 
 	<script type="text/javascript" src="jquery.js"></script>
 
+	<script type="text/javascript" src="scripts/platform.js"></script>
+
 	<script type="text/javascript">
 		//hold decks and ratings
 		var allDecks = []; // list of user deck objects
@@ -48,14 +50,14 @@
 			/*testing session variable
 			var username = sessionStorage.getItem('username');
 			alert(username);*/
-			var platform;
+			/*var platform;
 
 			if (navigator.platform.match(/Win32|MacIntel/)) {
 				platform = "http://127.0.0.1/";
 			}
 			else {
 				platform = "http://10.0.2.2/";
-			}
+			}*/
 
 			$("#deck-search-btn").click(function () {
 				//clear previous search results
@@ -64,7 +66,7 @@
 				var deckname = $("#deckname").val();
 				var clan = $("#clan").val();
 				var creator = $("#creator").val();
-				
+
 				var url = platform + "zhang_kevin_project2/searchdecks.php";
 				$.post(url, { deckname: deckname, clan: clan, creator: creator }, function (data, textStatus) {
 					//alert(JSON.stringify(data)); //for debugging
@@ -99,7 +101,7 @@
 							rating = rating.toPrecision(2);
 						}
 
-						var deck = { creator_id: creator_id, creator: creator, deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating};
+						var deck = { creator_id: creator_id, creator: creator, deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating };
 						//push each deck into deck array
 						allDecks.push(deck);
 

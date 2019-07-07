@@ -23,6 +23,8 @@
 
 	<script type="text/javascript" src="jquery.js"></script>
 
+	<script type="text/javascript" src="scripts/platform.js"></script>
+
 	<script type="text/javascript">
 		//get user id from session
 		var user_id = sessionStorage.getItem('user_id');
@@ -40,14 +42,14 @@
 		var userDecks = []; // list of user deck objects
 
 		$(document).ready(function () {
-			var platform;
+			/*var platform;
 
 			if (navigator.platform.match(/Win32|MacIntel/)) {
 				platform = "http://127.0.0.1/";
 			}
 			else {
 				platform = "http://10.0.2.2/";
-			}
+			}*/
 
 			//author name
 			if (userinfo !== null) {
@@ -131,7 +133,7 @@
 							//button to view deck
 							"<div class='form-group'>" +
 							"<button type='submit' name='view-any-btn' id='view-any-" + i + "' class='btn btn-primary btn-block btn-sm view-any-btn'>View Deck</button>" +
-							"</div>" + 
+							"</div>" +
 
 							"</div>");
 					}

@@ -60,6 +60,8 @@
             destinationType: Camera.DestinationType.DATA_URL
         });
 
+        alert("Camera button was clicked");
+
         function onSuccess(imageData) {
             //var image = document.getElementById('myImage');
             //image.src = "data:image/jpeg;base64," + imageData;
@@ -80,10 +82,12 @@
             sourceType: Camera.PictureSourceType.PHOTOLIBRARY
         });
 
+        alert("Gallery button was clicked");
+
         function onSuccess(imageURL) {
             //var image = document.getElementById('myImage');
             //image.src = imageURL;
-            alert(imageURL);
+            alert(imageURL.length);
         }
 
         function onFail(message) {

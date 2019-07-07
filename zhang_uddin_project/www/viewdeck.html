@@ -23,6 +23,8 @@
 
 	<script type="text/javascript" src="jquery.js"></script>
 
+	<script type="text/javascript" src="scripts/platform.js"></script>
+
 	<script type="text/javascript">
 		//function for sorting deck. Usage: deckList = sortObj(decklist, 'grade')
 		function sortObj(list, key) {
@@ -71,14 +73,14 @@
 
 		$(document).ready(function () {
 			//print deck name
-			var platform;
+			/*var platform;
 
 			if (navigator.platform.match(/Win32|MacIntel/)) {
 				platform = "http://127.0.0.1/";
 			}
 			else {
 				platform = "http://10.0.2.2/";
-			}
+			}*/
 
 			document.getElementById("added-deck").innerHTML = viewdeck.deckname;
 			document.getElementById("desc").innerHTML = viewdeck.description;
@@ -284,7 +286,7 @@
 				// get modal
 				var modal = document.getElementById(cardModalId);
 
-				//insert image into modal 
+				//insert image into modal
 				//FIXME: refactor cardImage to use ajax post that gets big image from server
 				var cardImage = document.getElementById(cardImageId);
 

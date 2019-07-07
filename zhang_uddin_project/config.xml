@@ -105,4 +105,5 @@
   </platform>
   <plugin name="cordova-plugin-shake" spec="~0.6.0" src="https://github.com/leecrossley/cordova-plugin-shake.git" />
   <plugin name="cordova-plugin-device-motion" spec="~2.0.1" />
+  <plugin name="cordova-plugin-camera" spec="~2.4.1" />
 </widget>
