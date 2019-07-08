@@ -9,5 +9,6 @@ else {
     // https://www.quora.com/Is-it-possible-to-access-my-XAMPP-local-web-server-from-any-device-on-the-same-network
     // code to get ip address of client machine
     // http://embed.plnkr.co/plunk/xwVEru
-    platform = "http://192.168.1.71/";
+    //platform = "http://192.168.1.71/";
+    platform = "http://10.10.10.110/";
 }
