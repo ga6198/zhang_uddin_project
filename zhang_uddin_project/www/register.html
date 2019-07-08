@@ -68,8 +68,13 @@
 								$("#register-btn").val('Connecting...');
 							},
 							cache: false,
+							error: function () {
+								alert("Something went wrong when connecting");
+							},
 							success: function (result) {
 								if (result === "registration success") {
+									//alert("entering registration code");
+
 									//get json for userinfo and save in session
 									// save user info to session
 									var url = platform + "zhang_kevin_project2/getUserInfo.php";
@@ -92,17 +97,27 @@
 										//session variables
 										sessionStorage.setItem("user_id", id.toString(10));
 										sessionStorage.setItem("username", currentUsername);
+
+										if (sessionStorage.getItem("user_id") !== null && sessionStorage.getItem("username") !== null) {
+											location.href = "browse.html";
+										}
+										else {
+											alert("session variables not being set");
+										}
 									}, "json");
+									
+									//location.href = "browse.html";
 
-									location.href = "browse.html";
-
-									alert("Registered. You may log in now");
+									//alert("Registered. You may log in now");
 								}
 								else if (result === "invalid email") {
 									alert("Please enter a valid email");
 								}
 								else if (result === "username exists") {
 									alert("Username is already taken");
+								}
+								else if (result === "registration failed") {
+									alert("Something went wrong in php request");
 								}
 								else {
 									alert("Registration failed");
@@ -126,7 +141,6 @@
 <body>
     <div class="container">
 		<div class="col-md-6 offset-md-3 col-sm-12 form-div">
-			<form>
 				<div class="form-group">
 					<label for="username">Username</label>
 					<input type="text" name="username" placeholder="Required" id="username" class="form-control form-control-lg" required>
@@ -147,7 +161,6 @@
 					<button type="submit" name="register-btn" id="register-btn" class="btn btn-primary btn-block btn-lg">Register</button>
 				</div>
 				<p class="text-center">If you already have an account: <a href="index.html">Log In</a></p>
-			</form>
 		</div>
     </div>
 

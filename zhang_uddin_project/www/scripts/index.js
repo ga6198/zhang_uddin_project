@@ -68,6 +68,16 @@
             //var options = new FileUploadOptions();
             //options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
 
+            /*Crop Image Plugin Code*/
+            var croppedImageData;
+            plugins.crop(function success(data) {
+                alert("crop successful");
+                croppedImageData = data;
+            },
+            function fail() {
+                alert("Crop failed")
+            }, imageData, { quality: 100, targetWidth: 100, targetHeight: 100 });
+
             //get user id from session
             var user_id = sessionStorage.getItem('user_id');
             user_id = parseInt(user_id);
@@ -82,7 +92,7 @@
             $.ajax({
                 type: "POST",
                 url: uploadPictureURL,
-                data: { img_data: imageData, user_id: user_id },
+                data: { img_data: croppedImageData, user_id: user_id },
                 cache: false,
                 contentType: "application/x-www-form-urlencoded",
                 error: function () {
