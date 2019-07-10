@@ -167,15 +167,45 @@
         navigator.camera.getPicture(onSuccess, onFail, {
             quality: 50,
             destinationType: Camera.DestinationType.DATA_URL,
-            sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+            allowEdit: true,
+            targetWidth: 100,
+            targetHeight: 100
         });
 
         //alert("Gallery button was clicked");
 
-        function onSuccess(imageURL) {
-            //var image = document.getElementById('myImage');
-            //image.src = imageURL;
-            alert(imageURL.length);
+        function onSuccess(imageData) {
+            //get user id from session
+            var user_id = sessionStorage.getItem('user_id');
+            user_id = parseInt(user_id);
+
+            //load platform script
+            /*$.getScript("platform.js", function () {
+                alert("Script loaded but not necessarily executed.");
+            });*/
+
+            var uploadPictureURL = platform + "zhang_kevin_project2/upload.php";
+
+            $.ajax({
+                type: "POST",
+                url: uploadPictureURL,
+                data: { img_data: imageData, user_id: user_id },
+                cache: false,
+                contentType: "application/x-www-form-urlencoded",
+                error: function () {
+                    alert("Uploading camera photo went wrong");
+                },
+                success: function (result) {
+                    /*alert(result);
+                    var imgURL = platform + "zhang_kevin_project2" + result;
+                    alert(imgURL);
+                    var profImg = document.getElementById('prof-pic');
+                    profImg.src = imgURL;*/
+                    //location.href = profile.html;
+                    location.reload();
+                }
+            });
         }
 
         function onFail(message) {
