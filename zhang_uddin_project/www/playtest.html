@@ -214,15 +214,13 @@
 
         function onDeviceReady()
         {
-            alert("device ready");
             var currentx;
             var currenty;
             var watchID2;
             var watchID3;
 
             navigator.accelerometer.getCurrentAcceleration(onLoad, onErrorLoad);
-            document.getElementById("getAcceleration").addEventListener("click", getAcceleration);
-            document.getElementById("watchAcceleration").addEventListener("click", watchAcceleration);
+            
             function getAcceleration() {
                 navigator.accelerometer.getCurrentAcceleration(
                     accelerometerSuccess, accelerometerError);
@@ -237,11 +235,6 @@
                 function accelerometerError() {
                     alert('onError!');
                 };
-            }
-
-            function watchAcceleration() {
-                alert("finish");
-
             }
 
             var accelerometerOptions2 = {
@@ -365,8 +358,6 @@
             </div>
 
         </div>
-        <button id="getAcceleration">GET ACCELERATION</button>
-        <button id="watchAcceleration">WATCH ACCELERATION</button>
     </section>
 
     <footer class="site-footer"></footer>
