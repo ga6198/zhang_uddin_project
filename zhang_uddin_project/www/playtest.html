@@ -197,21 +197,119 @@
 		});
 
 		// command for detecting shake
-		shake.startWatch(onShake, onError);
+		/*shake.startWatch(onShake, onError);
 		
 		var onShake = function () {
 			// Fired when a shake is detected
 			// clear previous starting hand
-			$(".row").empty();
+            $(".row").empty();
+
+            alert("Shaking the phone");
 
 			//draw another hand
 			displayStartingHand(viewdeckcards);
-		};
+		};*/
 
-		var onError = function () {
-			// Fired when there is an accelerometer error (optional)
-			alert("Something went wrong with the shake!");
-		};
+        document.addEventListener("deviceready", onDeviceReady, false);
+
+        function onDeviceReady()
+        {
+            alert("device ready");
+            var currentx;
+            var currenty;
+            var watchID2;
+            var watchID3;
+
+            navigator.accelerometer.getCurrentAcceleration(onLoad, onErrorLoad);
+            document.getElementById("getAcceleration").addEventListener("click", getAcceleration);
+            document.getElementById("watchAcceleration").addEventListener("click", watchAcceleration);
+            function getAcceleration() {
+                navigator.accelerometer.getCurrentAcceleration(
+                    accelerometerSuccess, accelerometerError);
+
+                function accelerometerSuccess(acceleration) {
+                    alert('Acceleration X: ' + acceleration.x + '\n' +
+                        'Acceleration Y: ' + acceleration.y + '\n' +
+                        'Acceleration Z: ' + acceleration.z + '\n' +
+                        'Timestamp: ' + acceleration.timestamp + '\n');
+                };
+
+                function accelerometerError() {
+                    alert('onError!');
+                };
+            }
+
+            function watchAcceleration() {
+                alert("finish");
+
+            }
+
+            var accelerometerOptions2 = {
+                frequency: 200
+            }
+
+            var accelerometerOptions = {
+                frequency: 500
+            }
+            var watchID = navigator.accelerometer.watchAcceleration(
+                accelerometerSuccess, accelerometerError, accelerometerOptions);
+
+            function accelerometerSuccess(acceleration) {
+                if (acceleration.x >= 6 || acceleration.y >= 6 || acceleration.x <= -6 || acceleration.y <= -6) {
+                    currentx = acceleration.x;
+                    currenty = acceleration.y;
+
+                    watchID2 = navigator.accelerometer.watchAcceleration(
+                        accelerometerSuccess2, accelerometerError, accelerometerOptions2);
+                }
+            };
+
+            function accelerometerSuccess2(acceleration) {
+                if (acceleration.x < currentx || acceleration.y < currenty) {
+                    currentx = acceleration.x;
+                    currenty = acceleration.y;
+
+                    watchID3 = navigator.accelerometer.watchAcceleration(
+                        accelerometerSuccess3, accelerometerError, accelerometerOptions2);
+
+                }
+
+                setTimeout(function () {
+                    navigator.accelerometer.clearWatch(watchID2);
+                }, 1000);
+            };
+
+            function accelerometerSuccess3(acceleration) {
+                if (acceleration.x > currentx || acceleration.y > currenty) {
+                    currentx = acceleration.x;
+                    currenty = acceleration.y;
+
+                    $(".row").empty();
+                    displayStartingHand(viewdeckcards);
+                }
+
+                setTimeout(function () {
+                    navigator.accelerometer.clearWatch(watchID3);
+                }, 1000);
+            };
+
+            function accelerometerError() {
+                alert('onError!');
+            };
+
+            function onLoad(acceleration)
+            {
+                currentx = acceleration.x;
+                currenty = acceleration.y;
+            }
+
+            function onErrorLoad()
+            {
+                alert("error");
+                currentx = 0;
+                currenty = 0;
+            }
+        }
 
 	</script>
 
@@ -267,6 +365,8 @@
             </div>
 
         </div>
+        <button id="getAcceleration">GET ACCELERATION</button>
+        <button id="watchAcceleration">WATCH ACCELERATION</button>
     </section>
 
     <footer class="site-footer"></footer>
