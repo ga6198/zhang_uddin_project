@@ -23,6 +23,8 @@
 
 	<script type="text/javascript" src="jquery.js"></script>
 
+	<script type="text/javascript" src="scripts/platform.js"></script>
+
 	<script type="text/javascript">
 		//function to shuffle cards array
 		function shuffle(array) {
@@ -83,10 +85,11 @@
 				var onErrorPath = "vanguardImages/cfv_back.jpg";
 
 				var serverImageSource = platform + "zhang_kevin_project2/" + imagePath;
+				var serverErrorSource = platform + "zhang_kevin_project2/" + onErrorPath;
 				//print cards
 				$(".row").append(
 					"<div class='cardinfo'>" +
-					"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' onerror=this.src='" + onErrorPath + "' style='width:100%'>" +
+					"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' onerror=this.src='" + serverErrorSource + "' style='width:100%'>" +
 
 					//modal div
 					"<div id= 'card-modal-" + i + "' class='modal' >" +
@@ -101,14 +104,14 @@
 		}
 
 		// platform info
-		var platform;
+		/*var platform;
 
 		if (navigator.platform.match(/Win32|MacIntel/)) {
 			platform = "http://127.0.0.1/";
 		}
 		else {
 			platform = "http://10.0.2.2/";
-		}
+		}*/
 
 		//SESSION VARIABLES
 
@@ -168,7 +171,7 @@
 			// get modal
 			var modal = document.getElementById(cardModalId);
 
-			//insert image into modal 
+			//insert image into modal
 			//FIXME: refactor cardImage to use ajax post that gets big image from server
 			var cardImage = document.getElementById(cardImageId);
 
@@ -198,7 +201,7 @@
 
 		// command for detecting shake
 		shake.startWatch(onShake, onError);
-		
+
 		var onShake = function () {
 			// Fired when a shake is detected
 			// clear previous starting hand
@@ -215,7 +218,7 @@
 
 	</script>
 
-	<title>View Decks</title>
+	<title>Playtest</title>
 </head>
 
 <body>

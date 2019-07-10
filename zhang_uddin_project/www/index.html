@@ -36,10 +36,11 @@
 		});
 	</script>
 	-->
+	<script type="text/javascript" src="scripts/platform.js"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function () {
-			var platform;
+			/*var platform;
 
 			if (navigator.platform.match(/Win32|MacIntel/)) {
 				platform = "http://127.0.0.1/";
@@ -51,7 +52,7 @@
 				// code to get ip address of client machine
 				// http://embed.plnkr.co/plunk/xwVEru
 				//platform = "http://192.168.1.71/";
-			}
+			}*/
 			$("#login-btn").click(function () {
 				var username = $("#username").val();
 				var password = $("#password").val();
@@ -72,7 +73,7 @@
 							//alert(result); // for debugging
 
 							if (result === "logged in") {
-								location.href = "browse.html";
+								//alert("login successful");
 
 								//get json for userinfo and save in session
 								// save user info to session
@@ -92,10 +93,20 @@
 									verified = data.verified;
 									token = data.token;
 									currentPassword = data.password;
+
 									//session variables
 									sessionStorage.setItem("user_id", id.toString(10));
 									sessionStorage.setItem("username", currentUsername);
+
+									if (sessionStorage.getItem("user_id") !== null && sessionStorage.getItem("username") !== null) {
+										location.href = "browse.html";
+									}
+									else {
+										alert("session variables not being set");
+									}
 								}, "json");
+
+								//location.href = "browse.html";
 							}
 							else if (result === "failed") {
 								alert("password_verify in login.php failed");

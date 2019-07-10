@@ -23,6 +23,8 @@
 
 	<script type="text/javascript" src="jquery.js"></script>
 
+	<script type="text/javascript" src="scripts/platform.js"></script>
+
 	<script type="text/javascript">
 		//get user id from session
 		var user_id = sessionStorage.getItem('user_id');
@@ -45,14 +47,14 @@
 		var cardSearchResults = []
 
 		$(document).ready(function () {
-			var platform;
+			/*var platform;
 
 			if (navigator.platform.match(/Win32|MacIntel/)) {
 				platform = "http://127.0.0.1/";
 			}
 			else {
 				platform = "http://10.0.2.2/";
-			}
+			}*/
 			//if editing deck, display current deck
 			if (setdeck !== null) {
 				document.getElementById("editing-deck").innerHTML = "Editing deck: <strong><a href='viewdeck.html' id='move-to-viewdeck'>" + setdeck.deckname + "</a></strong>. Any card added will go to this deck.";
@@ -97,18 +99,19 @@
 						cardSearchResults.push(card);
 
 						var serverImageSource = platform + "zhang_kevin_project2/" + imagePath;
+						var serverErrorSource = platform + "zhang_kevin_project2/" + onErrorPath;
 						//add cardinfo boxes
 						$(".row").append(
 							//card info
 							"<div class='cardinfo'>" +
-							"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' alt='" + name + "' onerror=this.src='" + onErrorPath + "' style='width:100%'>" +
-							
+							"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' alt='" + name + "' onerror=this.src='" + serverErrorSource + "' style='width:100%'>" +
+
 							//modal div
 							"<div id= 'card-modal-" + i + "' class='modal' >" +
 							"<span class='close'>&times;</span>" +
 							"<img id='modal-image-" + i + "' class='modal-content'>" +
 							"</div>" +
-							
+
 							"<p>" +
 							"<strong>Name: </strong>" + name + "<br>" +
 							"<strong>Clan: </strong>" + clan + "<br>" +
@@ -183,7 +186,7 @@
 				// get modal
 				var modal = document.getElementById(cardModalId);
 
-				//insert image into modal 
+				//insert image into modal
 				//FIXME: refactor cardImage to use ajax post that gets big image from server
 				var cardImage = document.getElementById(cardImageId);
 
@@ -195,7 +198,7 @@
 				var cardFileName = sourceParts.pop() || sourceParts.pop();
 
 				// get larger image from server
-				var serverImageSource = platform + "zhang_kevin_project2/vanguardImages/" + cardFileName; 
+				var serverImageSource = platform + "zhang_kevin_project2/vanguardImages/" + cardFileName;
 				var serverCardId = "server-card-" + currentCardId;
 
 				var modalImage = document.getElementById(modalImageId);
@@ -204,7 +207,7 @@
 				modalImage.alt = cardName;
 
 				currentModal = modal;
-			}); 
+			});
 
 			$(document).on("click", ".close", function () {
 				var modal = currentModal;

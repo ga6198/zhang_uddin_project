@@ -23,6 +23,8 @@
 
 	<script type="text/javascript" src="jquery.js"></script>
 
+	<script type="text/javascript" src="scripts/platform.js"></script>
+
 	<script type="text/javascript">
 		//function for sorting deck. Usage: deckList = sortObj(decklist, 'grade')
 		function sortObj(list, key) {
@@ -71,14 +73,15 @@
 
 		$(document).ready(function () {
 			//print deck name
-			var platform;
+			/*var platform;
 
 			if (navigator.platform.match(/Win32|MacIntel/)) {
 				platform = "http://127.0.0.1/";
 			}
 			else {
+<a href="viewanydeck.html">viewanydeck.html</a>
 				platform = "http://10.0.2.2/";
-			}
+			}*/
 
 			document.getElementById("added-deck").innerHTML = viewdeck.deckname;
 			document.getElementById("desc").innerHTML = viewdeck.description;
@@ -128,10 +131,11 @@
 				$.each(sortedCards, function (i, field) {
 					//alert(JSON.stringify(field));
 					var serverImageSource = platform + "zhang_kevin_project2/" + field.imagePath;
+					var serverErrorSource = platform + "zhang_kevin_project2/" + field.onErrorPath;
 
 					$(".row").append(
 						"<div class='cardinfo'>" +
-						"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' alt='" + field.name + "' onerror=this.src='" + field.onErrorPath + "' style='width:100%'>" +
+						"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' alt='" + field.name + "' onerror=this.src='" + serverErrorSource + "' style='width:100%'>" +
 
 						//modal div
 						"<div id= 'card-modal-" + i + "' class='modal' >" +
@@ -248,7 +252,7 @@
 				// get modal
 				var modal = document.getElementById(cardModalId);
 
-				//insert image into modal 
+				//insert image into modal
 				//FIXME: refactor cardImage to use ajax post that gets big image from server
 				var cardImage = document.getElementById(cardImageId);
 

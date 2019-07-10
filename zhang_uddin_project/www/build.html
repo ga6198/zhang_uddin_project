@@ -23,6 +23,8 @@
 
 	<script type="text/javascript" src="jquery.js"></script>
 
+	<script type="text/javascript" src="scripts/platform.js"></script>
+
 	<script type="text/javascript">
 		//hold user's decks
 		var userDecks = []; // list of user deck objects
@@ -43,23 +45,23 @@
 			location.href = "index.html";
 		}
 
-        var platform;
-        $(document).ready(function () {
+		$(document).ready(function () {
+			/*var platform;
 
-            if (navigator.platform.match(/Win32|MacIntel/)) {
-                platform = "http://127.0.0.1/";
-            }
-            else {
-                platform = "http://10.0.2.2/";
-            }
+			if (navigator.platform.match(/Win32|MacIntel/)) {
+				platform = "http://127.0.0.1/";
+			}
+			else {
+				platform = "http://10.0.2.2/";
+			}*/
 			$("#add-deck-btn").click(function () {
 				var deckname = $("#deckname").val();
 				var description = $("#description").val();
 				var clan = $("#clan").val();
 				if ($.trim(deckname).length > 0) {
 					$.ajax({
-                        type: "POST",  //Request type
-                        url: platform + "zhang_kevin_project2/adddeck.php",
+						type: "POST",  //Request type
+						url: platform + "zhang_kevin_project2/adddeck.php",
 						data: { user_id: user_id, deckname: deckname, description: description, clan: clan },
 						//dataType: text, // for debugging
 						crossDomain: true,
@@ -87,7 +89,7 @@
 				}
 			})
 
-            var getUserDecksUrl = platform + "zhang_kevin_project2/getUserDecks.php";
+			var getUserDecksUrl = platform + "zhang_kevin_project2/getUserDecks.php";
 			$.post(getUserDecksUrl, { user_id: user_id }, function (data, textStatus) {
 				//alert(JSON.stringify(data)); //for debugging
 
@@ -104,6 +106,7 @@
 					if (description === "") {
 						description = "N/A";
 					}
+					var creator_id = field.user_id;
 					var creator = field.username;
 					var clan = field.clan;
 					var clanImageDir = getClanImageDirectory(clan);
@@ -117,7 +120,7 @@
 						rating = rating.toPrecision(2);
 					}
 
-					var deck = { deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating};
+					var deck = { creator_id: creator_id, creator: creator, deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating };
 					//push each deck into user deck array
 					//alert(JSON.stringify(deck)); //for debugging
 					userDecks.push(deck);
@@ -129,7 +132,7 @@
 						"<p>" +
 						"<strong>Deck Name: </strong>" + deckname + "<br>" +
 						"<strong>Clan: </strong>" + clan + "<br>" +
-						"<strong>Creator: </strong>" + creator + "<br>" +
+						"<strong>Creator: </strong><a href='#' id='author-name-" + i + "' class='author-name'>" + creator + "</a><br>" +
 						"<strong>Rating (AVG): </strong>" + rating + "<br>" +
 						"</p>" +
 
@@ -231,7 +234,21 @@
                     }
                 })
             }
-        });
+		});
+
+		//command for author name link
+		$(document).on("click", ".author-name", function () {
+			var currentDeckId = this.id;
+			//currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			currentDeckId = currentDeckId.split('-')[2]; //get last number in id
+			//convert id string to int
+			currentDeckId = parseInt(currentDeckId);
+
+			//save user info into session variables
+			sessionStorage.setItem('userinfo', JSON.stringify(userDecks[currentDeckId]));
+
+			location.href = "profile.html";
+		});
 	</script>
 
 	<title>Build Decks</title>

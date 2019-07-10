@@ -1,0 +1,267 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'" />
+
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<meta name="format-detection" content="telephone=no">
+	<meta name="msapplication-tap-highlight" content="no">
+	<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+
+	<!-- Bootstrap -->
+	<!--
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	-->
+	<link rel="stylesheet" type="text/css" href="bootstrap-4.1.3-dist/css/bootstrap.min.css" />
+	<script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
+
+	<link rel="stylesheet" href="css/style.css">
+
+	<script type="text/javascript" src="jquery.js"></script>
+
+	<script type="text/javascript" src="scripts/platform.js"></script>
+
+	<script type="text/javascript">
+		//get user id from session
+		var user_id = sessionStorage.getItem('user_id');
+		user_id = parseInt(user_id);
+		//if user id not set, return to login
+		if (user_id === null || isNaN(user_id)) {
+			location.href = "index.html";
+		}
+
+		//get user info from session
+		var userinfo = sessionStorage.getItem('userinfo');
+		userinfo = JSON.parse(userinfo);
+
+		//hold user's decks
+		var userDecks = []; // list of user deck objects
+
+		$(document).ready(function () {
+			/*var platform;
+
+			if (navigator.platform.match(/Win32|MacIntel/)) {
+				platform = "http://127.0.0.1/";
+			}
+			else {
+				platform = "http://10.0.2.2/";
+			}*/
+
+			//author name
+			if (userinfo !== null) {
+				document.getElementById("author-page").innerHTML = userinfo.creator;
+			}
+
+			//get profile user id from session var
+			var profile_creator_id = userinfo.creator_id;
+
+			// display user's decks
+			var getUserDecksUrl = platform + "zhang_kevin_project2/getUserDecks.php";
+			$.post(getUserDecksUrl, { user_id: profile_creator_id }, function (data, textStatus) {
+				var decks = data.decks;
+				var ratings = data.ratings;
+
+				//for each deck, print contents
+				$.each(decks, function (i, field) {
+
+					var deck_id = field.deck_id;
+					var deckname = field.deckname;
+					var description = field.description;
+					// change description if empty
+					if (description === "") {
+						description = "N/A";
+					}
+					var creator_id = field.user_id;
+					var creator = field.username;
+					var creator_pic = field.profile_picture;
+					var clan = field.clan;
+					var clanImageDir = getClanImageDirectory(clan);
+
+					var rating = ratings[i].rating_average;
+					// change rating if empty
+					if (rating === "" || rating === null) {
+						rating = "N/A";
+					}
+					else {
+						rating = rating.toPrecision(2);
+					}
+
+					var deck = { creator_id: creator_id, creator: creator, creator_pic: creator_pic, deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating };
+					//push each deck into user deck array
+					//alert(JSON.stringify(deck)); //for debugging
+					userDecks.push(deck);
+
+					var serverImageSource = platform + "zhang_kevin_project2/" + clanImageDir;
+
+					// if the person viewing the profile is the same as whom the profile is about
+					if (profile_creator_id == user_id) {
+						$(".row").append(
+							"<div class='deckinfo'>" +
+							"<img src='" + serverImageSource + "' class='rounded' alt='" + clan + "' style='width:100%'" +
+							"<p>" +
+							"<strong>Deck Name: </strong>" + deckname + "<br>" +
+							"<strong>Clan: </strong>" + clan + "<br>" +
+							"<strong>Rating (AVG): </strong>" + rating + "<br>" +
+							"</p>" +
+
+							//button to view deck
+							"<div class='form-group'>" +
+							"<button type='submit' name='view-deck-btn' id='view-deck-" + i + "' class='btn btn-primary btn-block btn-sm view-deck-btn'>View Deck</button>" +
+							"</div>" +
+
+							//button to edit deck
+							"<div class='form-group'>" +
+							"<button type='submit' name='set-deck-btn' id='set-deck-" + i + "' class='btn btn-primary btn-block btn-sm set-deck-btn'>Edit Deck</button>" +
+							"</div>" +
+
+							"</div>");
+					}
+					else {
+						$(".row").append(
+							"<div class='deckinfo'>" +
+							"<img src='" + serverImageSource + "' class='rounded' alt='" + clan + "' style='width:100%'" +
+							"<p>" +
+							"<strong>Deck Name: </strong>" + deckname + "<br>" +
+							"<strong>Clan: </strong>" + clan + "<br>" +
+							"<strong>Rating (AVG): </strong>" + rating + "<br>" +
+							"</p>" +
+
+							//button to view deck
+							"<div class='form-group'>" +
+							"<button type='submit' name='view-any-btn' id='view-any-" + i + "' class='btn btn-primary btn-block btn-sm view-any-btn'>View Deck</button>" +
+							"</div>" +
+
+							"</div>");
+					}
+				});
+
+				//display profile picture
+				//if the current profile has no picture
+				if (userDecks[0].creator_pic == null || userDecks[0].creator_pic == "") {
+					var creator = userDecks[0].creator;
+					var serverDefaultProfile = platform + "zhang_kevin_project2/profileImages/vanguard_blue.jpg"
+					$(".profile-picture").append("<img src='" + serverDefaultProfile + "' alt='" + creator + "' id='prof-pic' class='avatar center'>");
+				}
+				else {
+					var creator = userDecks[0].creator;
+					var creator_pic = userDecks[0].creator_pic;
+					var serverProfile = platform + "zhang_kevin_project2/profileImages/" + creator_pic;
+					$(".profile-picture").append("<img src='" + serverProfile + "' alt='" + creator + "' id='prof-pic' class='avatar center'>");
+				}
+
+				//display edit picture buttons if user is the profile user
+				if (userDecks[0].creator_id == user_id) {
+					$(".upload-picture-camera").append("<button type='submit' name='camera-picture-btn' id='camera-picture-btn' class='btn btn-primary btn-block btn-sm'>Take Picture</button>");
+					$(".upload-picture-gallery").append("<button type='submit' name='gallery-picture-btn' id='gallery-picture-btn' class='btn btn-primary btn-block btn-sm'>Upload Picture</button>");
+				}
+
+			}, "json");
+		})
+
+		// command for the view deck button
+		// https://www.sitepoint.com/community/t/jquery-code-doesnt-work-on-dynamic-content-loaded-with-ajax/31758/5
+		$(document).on("click", ".view-deck-btn", function () {
+			var currentDeckId = this.id;
+			//currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			currentDeckId = currentDeckId.split('-')[2]; //get last number in id
+			//convert id string to int
+			currentDeckId = parseInt(currentDeckId);
+
+			//save view deck info into session variables
+			//alert(JSON.stringify(userDecks[currentDeckId]));
+			sessionStorage.setItem('viewdeck', JSON.stringify(userDecks[currentDeckId]));
+
+			location.href = "viewdeck.html";
+		});
+
+		// command for the view any deck button
+		// https://www.sitepoint.com/community/t/jquery-code-doesnt-work-on-dynamic-content-loaded-with-ajax/31758/5
+		$(document).on("click", ".view-any-btn", function () {
+			var currentDeckId = this.id;
+			//currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			currentDeckId = currentDeckId.split('-')[2]; //get last number in id
+			//convert id string to int
+			currentDeckId = parseInt(currentDeckId);
+
+			//save view deck info into session variables
+			//alert(JSON.stringify(userDecks[currentDeckId]));
+			sessionStorage.setItem('viewdeck', JSON.stringify(userDecks[currentDeckId]));
+
+			location.href = "viewanydeck.html";
+		});
+
+		// command for the edit deck button
+		$(document).on("click", ".set-deck-btn", function () {
+			var currentDeckId = this.id;
+			//currentDeckId = currentDeckId[currentDeckId.length - 1]; //get last character of array (the number)
+			currentDeckId = currentDeckId.split('-')[2]; //get last number in id
+			//convert id string to int
+			currentDeckId = parseInt(currentDeckId);
+
+			//save view deck info into session variables
+			//alert(JSON.stringify(userDecks[currentDeckId]));
+			sessionStorage.setItem('setdeck', JSON.stringify(userDecks[currentDeckId]));
+
+			location.href = "search.html";
+		});
+
+	</script>
+
+	<title>Profile</title>
+</head>
+
+<body>
+	<header class="site-header">
+		<div class="container">
+			<h1>Vanguard Deck Builder</h1>
+		</div>
+	</header>
+
+	<div class="site-nav">
+		<div id="sideMenu" class="sidemenu">
+			<a href="javascript:void(0)" class="closebtn" onclick="closeSideMenu()">&times;</a>
+			<a href="browse.html">Browse Decks</a>
+			<a href="build.html">Build Decks</a>
+			<a id="logout">Logout</a>
+		</div>
+
+		<span onclick="openSideMenu()" id="sideBarButton">&#9776</span>
+	</div>
+
+	<section class="site-main">
+		<div class="container">
+			<h3 id="author-page" class="text-center"></h3>
+
+			<hr />
+
+			<h3 class="text-center">Profile Picture</h3>
+			<div class="profile-picture-container">
+				<div class="profile-picture-options">
+					<div class="profile-picture"></div>
+					<div id="upload-picture-camera" class="upload-picture-camera"></div>
+					<div id="upload-picture-gallery" class="upload-picture-gallery"></div>
+				</div>
+			</div>
+
+			<hr />
+
+			<h3 class="text-center">Decks</h3>
+			<div class="row">
+
+			</div>
+		</div>
+	</section>
+
+	<footer class="site-footer"></footer>
+
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="scripts/platformOverrides.js"></script>
+	<script type="text/javascript" src="scripts/index.js"></script>
+
+</body>
+
+</html>

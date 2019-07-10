@@ -7,3 +7,10 @@ Connection to WAMP through phone VERY IMPORTANT
 https://stackoverflow.com/questions/39338660/android-you-dont-have-permission-to-access-on-this-server-wamp
 1. modify httpd.conf by replacing the "Require" statement with "Require all granted"
 2. do the same with httpd-vhost.conf
+
+
+New updates in createusers, which involve profile pictures. Need to run these
+
+Cordova Plugin File 6 doesn't work with Cordova Android version 5. Need to find a way to either update Cordova version or use older plugin.
+Follow the instructions here: https://stackoverflow.com/questions/46942153/how-to-update-cordova-on-visual-studio-2017
+Use 9.0.0 instead of 8.1.1, since that is the latest version that you probably installed with cordova
