@@ -144,13 +144,13 @@
 				if (userDecks[0].creator_pic == null || userDecks[0].creator_pic == "") {
 					var creator = userDecks[0].creator;
 					var serverDefaultProfile = platform + "zhang_kevin_project2/profileImages/vanguard_blue.jpg"
-					$(".profile-picture").append("<div style='display:inline-block;'><img src='" + serverDefaultProfile + "' alt='" + creator + "' class='avatar center'></div>");
+					$(".profile-picture").append("<img src='" + serverDefaultProfile + "' alt='" + creator + "' id='prof-pic' class='avatar center'>");
 				}
 				else {
 					var creator = userDecks[0].creator;
 					var creator_pic = userDecks[0].creator_pic;
 					var serverProfile = platform + "zhang_kevin_project2/profileImages/" + creator_pic;
-					$(".profile-picture").append("<img src='" + serverProfile + "' alt='" + creator + "' class='avatar center'>");
+					$(".profile-picture").append("<img src='" + serverProfile + "' alt='" + creator + "' id='prof-pic' class='avatar center'>");
 				}
 
 				//display edit picture buttons if user is the profile user
