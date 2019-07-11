@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="jquery.js"></script>
 
 	<script type="text/javascript" src="scripts/platform.js"></script>
+	<script type="text/javascript" src="scripts/pageActions.js"></script>
 
 	<script type="text/javascript">
 		//hold decks and ratings
@@ -104,7 +105,7 @@
 							rating = rating.toPrecision(2);
 						}
 
-						var deck = { creator_id: creator_id, creator: creator, deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating };
+						var deck = { creator_id: creator_id, creator: creator, creator_pic: creator_pic, creator_pic_dir: creator_pic_dir, deck_id: deck_id, deckname: deckname, description: description, clan: clan, rating: rating };
 						//push each deck into deck array
 						allDecks.push(deck);
 
@@ -195,6 +196,7 @@
             <a href="javascript:void(0)" class="closebtn" onclick="closeSideMenu()">&times;</a>
             <a href="browse.html">Browse Decks</a>
             <a href="build.html">Build Decks</a>
+			<a onclick="goToProfile()">Profile</a>
             <a id="logout">Logout</a>
         </div>
 
