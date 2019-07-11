@@ -220,8 +220,11 @@
         {
             var currentx;
             var currenty;
+            var currentz;
             var watchID2;
             var watchID3;
+            var shake1 = false;
+            var shake2 = false;
 
             navigator.accelerometer.getCurrentAcceleration(onLoad, onErrorLoad);
             
@@ -251,10 +254,40 @@
             var watchID = navigator.accelerometer.watchAcceleration(
                 accelerometerSuccess, accelerometerError, accelerometerOptions);
 
+            var previousAcceleration = {
+                x: currentx,
+                y: currenty,
+                z: currentz
+            };
+
+           /*function accelerometerSuccess(acceleration)
+            {
+                var accelerationChange = {};
+                if (previousAcceleration.x !== null) {
+                    accelerationChange.x = Math.abs(previousAcceleration.x - acceleration.x);
+                    accelerationChange.y = Math.abs(previousAcceleration.y - acceleration.y);
+                    accelerationChange.z = Math.abs(previousAcceleration.z - acceleration.z);
+                }
+
+                previousAcceleration = {
+                    x: acceleration.x,
+                    y: acceleration.y,
+                    z: acceleration.z
+                };
+
+                if (accelerationChange.x + accelerationChange.y + accelerationChange.z > 10) {
+                    $(".row").empty();
+                    displayStartingHand(viewdeckcards);
+                }
+            }*/ // Another method for shaking if first one doesn't work
+
+            
             function accelerometerSuccess(acceleration) {
-                if (acceleration.x >= 6 || acceleration.y >= 6 || acceleration.x <= -6 || acceleration.y <= -6) {
+                if (Math.abs(acceleration.x) >= 6 || Math.abs(acceleration.y) >= 6) {
                     currentx = acceleration.x;
                     currenty = acceleration.y;
+
+                    shake1 = true;
 
                     watchID2 = navigator.accelerometer.watchAcceleration(
                         accelerometerSuccess2, accelerometerError, accelerometerOptions2);
@@ -262,13 +295,16 @@
             };
 
             function accelerometerSuccess2(acceleration) {
-                if (acceleration.x < currentx || acceleration.y < currenty) {
-                    currentx = acceleration.x;
-                    currenty = acceleration.y;
+                if ((Math.abs(acceleration.x) >= 6 || Math.abs(acceleration.y) >= 6) && shake1) {
+                    if (acceleration.x < currentx || acceleration.y < currenty) {
+                        currentx = acceleration.x;
+                        currenty = acceleration.y;
 
-                    watchID3 = navigator.accelerometer.watchAcceleration(
-                        accelerometerSuccess3, accelerometerError, accelerometerOptions2);
+                        shake2 = true;
 
+                        watchID3 = navigator.accelerometer.watchAcceleration(
+                            accelerometerSuccess3, accelerometerError, accelerometerOptions2);
+                    }
                 }
 
                 setTimeout(function () {
@@ -277,12 +313,17 @@
             };
 
             function accelerometerSuccess3(acceleration) {
-                if (acceleration.x > currentx || acceleration.y > currenty) {
-                    currentx = acceleration.x;
-                    currenty = acceleration.y;
+                if ((Math.abs(acceleration.x) >= 6 || Math.abs(acceleration.y) >= 6) && shake1 && shake2) {
+                    if (acceleration.x > currentx || acceleration.y > currenty) {
+                        currentx = acceleration.x;
+                        currenty = acceleration.y;
 
-                    $(".row").empty();
-                    displayStartingHand(viewdeckcards);
+                        $(".row").empty();
+                        displayStartingHand(viewdeckcards);
+
+                        shake1 = false;
+                        shake2 = false;
+                    }
                 }
 
                 setTimeout(function () {
@@ -298,6 +339,7 @@
             {
                 currentx = acceleration.x;
                 currenty = acceleration.y;
+                currentz = acceleration.z;
             }
 
             function onErrorLoad()
