@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="jquery.js"></script>
 
 	<script type="text/javascript" src="scripts/platform.js"></script>
+	<script type="text/javascript" src="scripts/pageActions.js"></script>
 
 	<script type="text/javascript">
 		//function for sorting deck. Usage: deckList = sortObj(decklist, 'grade')
@@ -82,8 +83,14 @@
 				platform = "http://10.0.2.2/";
 			}*/
 
+			//title and creator information
 			document.getElementById("added-deck").innerHTML = viewdeck.deckname;
 			document.getElementById("desc").innerHTML = viewdeck.description;
+
+			var creator = viewdeck.creator;
+			var serverProfile = platform + "zhang_kevin_project2/profileImages/" + viewdeck.creator_pic;
+			$(".profile-picture").append("<img src='" + serverProfile + "' alt='" + creator + "' id='prof-pic' class='avatar center'>");
+			document.getElementById("creator-name").innerHTML = creator;
 
 			var viewUserDeckUrl = platform + "zhang_kevin_project2/viewUserDeck.php";
 			$.post(viewUserDeckUrl, { deck_id: viewdeck.deck_id }, function (data, textStatus) {
@@ -342,6 +349,7 @@
 			<a href="javascript:void(0)" class="closebtn" onclick="closeSideMenu()">&times;</a>
 			<a href="browse.html">Browse Decks</a>
 			<a href="build.html">Build Decks</a>
+			<a onclick="goToProfile()">Profile</a>
 			<a id="logout">Logout</a>
 		</div>
 
@@ -352,7 +360,13 @@
 		<div class="container">
 			<!-- <p id="added-deck"></p> -->
 
+			<!-- title and creator-->
 			<h3 id="added-deck" class="text-center"></h3>
+			<p class="text-center">by</p>
+			<div class="profile-picture-container">
+				<div class="profile-picture"></div>
+				<h5 id="creator-name" class="text-center"></h5>
+			</div>
 
 			<hr />
 
