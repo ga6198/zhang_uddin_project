@@ -89,6 +89,9 @@
 						}
 						var creator_id = field.user_id;
 						var creator = field.username;
+						var creator_pic = field.profile_picture;
+						var creator_pic_dir = platform + "zhang_kevin_project2/profileImages/" + creator_pic;
+
 						var clan = field.clan;
 						var clanImageDir = getClanImageDirectory(clan);
 
@@ -113,7 +116,7 @@
 							"<p>" +
 							"<strong>Deck Name: </strong>" + deckname + "<br>" +
 							"<strong>Clan: </strong>" + clan + "<br>" +
-							"<strong>Creator: </strong><a href='#' id='author-name-" + i + "' class='author-name'>" + creator + "</a><br>" +
+							"<strong>Creator: <img src='" + creator_pic_dir + "' class='avatar-small'> </strong><a href='#' id='author-name-" + i + "' class='author-name'>" + creator + "</a><br>" +
 							"<strong>Rating (AVG): </strong>" + rating + "<br>" +
 							"</p>" +
 
