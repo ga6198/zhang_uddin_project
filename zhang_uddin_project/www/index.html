@@ -70,6 +70,9 @@
 						},
 						cache: false,
 						//error: alert("some error"),
+						error: function () {
+							alert("Login failed. Current ip is: " + platform);
+						},
 						success: function (result) {
 							//alert(result); // for debugging
 
@@ -113,7 +116,7 @@
 								alert("password_verify in login.php failed");
 							}
 							else {
-								location.href = "index.html";
+								//location.href = "index.html";
 								alert("Login failed");
 							}
 						}
@@ -130,7 +133,7 @@
 		})
 	</script>
 
-	<title>zhangkevinproject</title>
+	<title>Login</title>
 </head>
 <body>
     <!--
@@ -143,8 +146,8 @@
     </div>
         -->
 
-    <div class="container" id="deviceready">
-        <!-- <div class="row"> -->
+	<div class="container" id="deviceready">
+		<!-- <div class="row"> -->
 		<div class="col-md-6 offset-md-3 col-sm-12 form-div login">
 			<div class="form-group">
 				<label for="username">Username/Email</label>
@@ -159,11 +162,21 @@
 			</div>
 			<p class="text-center">If you need to make an account: <a href="register.html">Register</a></p>
 		</div>
-        <!-- </div> -->
-    </div>
+		<!-- </div> -->
+		<!-- Enter ip address -->
+		<div class="col-md-6 offset-md-3 col-sm-12 form-div">
+			<div class="form-group">
+				<label for="ip-box">Enter Server IP Address</label>
+				<input type="text" name="ip-box" id="ip-box" class="form-control form-control-lg">
+			</div>
+			<div class="form-group">
+				<button onclick="setPlatformId()" type="submit" name="ip-btn" id="ip-btn" class="btn btn-primary btn-block btn-lg">Submit IP</button>
+			</div>
+			<p id="ip-info"></p>
+		</div>
 
-    <script type="text/javascript" src="cordova.js"></script>
-    <script type="text/javascript" src="scripts/platformOverrides.js"></script>
-    <script type="text/javascript" src="scripts/index.js"></script>
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="scripts/platformOverrides.js"></script>
+		<script type="text/javascript" src="scripts/index.js"></script>
 </body>
 </html>
