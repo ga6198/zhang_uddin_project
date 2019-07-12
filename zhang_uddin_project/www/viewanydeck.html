@@ -13,9 +13,6 @@
 	<link rel="stylesheet" type="text/css" href="css/index.css">
 
 	<!-- Bootstrap -->
-	<!--
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	-->
 	<link rel="stylesheet" type="text/css" href="bootstrap-4.1.3-dist/css/bootstrap.min.css" />
 	<script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
 
@@ -25,33 +22,10 @@
 
 	<script type="text/javascript" src="scripts/platform.js"></script>
 	<script type="text/javascript" src="scripts/pageActions.js"></script>
+	<script type="text/javascript" src="scripts/deckCardActions.js"></script>
+	<script type="text/javascript" src="scripts/imageActions.js"></script>
 
 	<script type="text/javascript">
-		//function for sorting deck. Usage: deckList = sortObj(decklist, 'grade')
-		function sortObj(list, key) {
-			function compare(a, b) {
-				a = a[key];
-				b = b[key];
-				var type = (typeof (a) === 'string' ||
-					typeof (b) === 'string') ? 'string' : 'number';
-				var result;
-				if (type === 'string') result = a.localeCompare(b);
-				else result = a - b;
-				return result;
-			}
-			return list.sort(compare);
-		}
-
-		//function for grouping cards, mainly by grade
-		function groupBy(array, property) {
-			var hash = {};
-			for (var i = 0; i < array.length; i++) {
-				if (!hash[array[i][property]]) hash[array[i][property]] = [];
-				hash[array[i][property]].push(array[i]);
-			}
-			return hash;
-		}
-
 		//get user id from session
 		var user_id = sessionStorage.getItem('user_id');
 		user_id = parseInt(user_id);
@@ -62,27 +36,13 @@
 		viewdeck = JSON.parse(viewdeck);
 
 		//get user id from session
-		var user_id = sessionStorage.getItem('user_id');
-		user_id = parseInt(user_id);
-		//if user id not set, return to login
-		if (user_id === null || isNaN(user_id)) {
-			location.href = "index.html";
-		}
+		var user_id = getUserId();
 
 		//hold cards in deck
 		var deckCards = [];
 
 		$(document).ready(function () {
 			//print deck name
-			/*var platform;
-
-			if (navigator.platform.match(/Win32|MacIntel/)) {
-				platform = "http://127.0.0.1/";
-			}
-			else {
-<a href="viewanydeck.html">viewanydeck.html</a>
-				platform = "http://10.0.2.2/";
-			}*/
 
 			//title and creator information
 			document.getElementById("added-deck").innerHTML = viewdeck.deckname;
@@ -239,53 +199,6 @@
 			$(document).on("click", ".playtest-btn", function () {
 				location.href = "playtest.html";
 			});
-
-			//save the current modal globally, so it can be used in close
-			var currentModal = null;
-
-			// command for clicking on image
-			$(document).on("click", ".card-image", function () {
-				//alert("Card clicked!");
-				var currentCardId = this.id;
-				currentCardId = currentCardId.split('-')[2]; //get last number in id
-				//convert id string to int
-				currentCardId = parseInt(currentCardId);
-
-				// get card ids
-				var cardImageId = "card-image-" + currentCardId;
-				var cardModalId = "card-modal-" + currentCardId;
-				var modalImageId = "modal-image-" + currentCardId;
-
-				// get modal
-				var modal = document.getElementById(cardModalId);
-
-				//insert image into modal
-				//FIXME: refactor cardImage to use ajax post that gets big image from server
-				var cardImage = document.getElementById(cardImageId);
-
-				// prepare card info for server request
-				var cardName = this.alt;
-				var cardImageSource = this.src;
-				// get last part of source, which is the file name
-				var sourceParts = cardImageSource.split('/');
-				var cardFileName = sourceParts.pop() || sourceParts.pop();
-
-				// get larger image from server
-				var serverImageSource = platform + "zhang_kevin_project2/vanguardImages/" + cardFileName;
-				var serverCardId = "server-card-" + currentCardId;
-
-				var modalImage = document.getElementById(modalImageId);
-				modal.style.display = "block";
-				modalImage.src = serverImageSource;
-				modalImage.alt = cardName;
-
-				currentModal = modal;
-			});
-
-			$(document).on("click", ".close", function () {
-				var modal = currentModal;
-				modal.style.display = "none";
-			});
 		})
 	</script>
 
@@ -298,17 +211,6 @@
             <h1>Vanguard Deck Builder</h1>
         </div>
     </header>
-
-    <!-- OLD NAV
-        <nav class="site-nav">
-        <div class="container">
-            <ul>
-                <li><a href="browse.html">Browse Decks</a></li>
-                <li><a href="build.html">Build Decks</a></li>
-                <li><a id="logout">Logout</a></li>
-            </ul>
-        </div>
-    </nav>-->
 
     <div class="site-nav">
 		<div id="sideMenu" class="sidemenu">

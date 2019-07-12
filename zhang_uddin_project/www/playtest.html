@@ -13,9 +13,6 @@
 	<link rel="stylesheet" type="text/css" href="css/index.css">
 
 	<!-- Bootstrap -->
-	<!--
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-	-->
 	<link rel="stylesheet" type="text/css" href="bootstrap-4.1.3-dist/css/bootstrap.min.css" />
 	<script src="bootstrap-4.1.3-dist/js/bootstrap.min.js"></script>
 
@@ -25,95 +22,10 @@
 
 	<script type="text/javascript" src="scripts/platform.js"></script>
 	<script type="text/javascript" src="scripts/pageActions.js"></script>
+	<script type="text/javascript" src="scripts/deckCardActions.js"></script>
+	<script type="text/javascript" src="scripts/imageActions.js"></script>
 
 	<script type="text/javascript">
-		//function to shuffle cards array
-		function shuffle(array) {
-			var currentIndex = array.length, temporaryValue, randomIndex;
-
-			// While there remain elements to shuffle...
-			while (0 !== currentIndex) {
-
-				// Pick a remaining element...
-				randomIndex = Math.floor(Math.random() * currentIndex);
-				currentIndex -= 1;
-
-				// And swap it with the current element.
-				temporaryValue = array[currentIndex];
-				array[currentIndex] = array[randomIndex];
-				array[randomIndex] = temporaryValue;
-			}
-
-			return array;
-		}
-
-		function displayStartingHand(deck) {
-			deckWithoutG4s = [];
-			// remove grade 4 g units and g guardians
-			$.each(deck, function (i, field) {
-				//alert(JSON.stringify(field));
-
-				grade = field.grade
-
-				if (!grade.includes("Triple Drive") && !grade.includes("G-Guardian")) {
-					deckWithoutG4s.push(field);
-				}
-			});
-			//alert(JSON.stringify(deckWithoutG4s));
-
-			//shuffle deck
-			deckWithoutG4s = shuffle(deckWithoutG4s);
-
-			// number of cards to print. Mainly handles if there are less than 5 cards
-			numCardsToPrint = deckWithoutG4s.length;
-			// if more than 5 cards, reduce to 5 cards
-			if (numCardsToPrint > 5) {
-				numCardsToPrint = 5;
-			}
-
-			//print first 5 cards
-			for (i = 0; i < numCardsToPrint; i++) {
-				//get image data
-				var imageFile = deckWithoutG4s[i].imageFile;
-				// if image doesn't end in jpg, add jpg
-				if (!imageFile.endsWith(".jpg")) {
-					imageFile = imageFile + ".jpg";
-				}
-
-				var name = deckWithoutG4s[i].name;
-
-				var imagePath = "vanguardImages/" + imageFile;
-				var onErrorPath = "vanguardImages/cfv_back.jpg";
-
-				var serverImageSource = platform + "zhang_kevin_project2/" + imagePath;
-				var serverErrorSource = platform + "zhang_kevin_project2/" + onErrorPath;
-				//print cards
-				$(".row").append(
-					"<div class='cardinfo'>" +
-					"<img src='" + serverImageSource + "' id='card-image-" + i + "' class='card-image rounded' onerror=this.src='" + serverErrorSource + "' style='width:100%'>" +
-
-					//modal div
-					"<div id= 'card-modal-" + i + "' class='modal' >" +
-					"<span class='close'>&times;</span>" +
-					"<img id='modal-image-" + i + "' class='modal-content'>" +
-					"</div>" +
-
-					"<p style='text-align:center;'>" + name + "</p>" +
-
-					"</div>");
-			}
-		}
-
-		// platform info
-		/*var platform;
-
-		if (navigator.platform.match(/Win32|MacIntel/)) {
-			platform = "http://127.0.0.1/";
-		}
-		else {
-			platform = "http://10.0.2.2/";
-		}*/
-
 		//SESSION VARIABLES
 
 		//get user id from session
@@ -131,12 +43,7 @@
 		viewdeckcards = JSON.parse(viewdeckcards);
 
 		//get user id from session
-		var user_id = sessionStorage.getItem('user_id');
-		user_id = parseInt(user_id);
-		//if user id not set, return to login
-		if (user_id === null || isNaN(user_id)) {
-			location.href = "index.html";
-		}
+		var user_id = getUserId();
 
 		$(document).ready(function () {
 			document.getElementById("added-deck").innerHTML = "Starting hand (excluding red & green G-Units) for: " + viewdeck.deckname;
@@ -153,202 +60,138 @@
 			displayStartingHand(viewdeckcards);
 		});
 
-		//save the current modal globally, so it can be used in close
-		var currentModal = null;
+		document.addEventListener("deviceready", onDeviceReady, false);
 
-		// command for clicking on image
-		$(document).on("click", ".card-image", function () {
-			//alert("Card clicked!");
-			var currentCardId = this.id;
-			currentCardId = currentCardId.split('-')[2]; //get last number in id
-			//convert id string to int
-			currentCardId = parseInt(currentCardId);
+		function onDeviceReady() {
+			var currentx;
+			var currenty;
+			var currentz;
+			var watchID2;
+			var watchID3;
+			var shake1 = false;
+			var shake2 = false;
 
-			// get card ids
-			var cardImageId = "card-image-" + currentCardId;
-			var cardModalId = "card-modal-" + currentCardId;
-			var modalImageId = "modal-image-" + currentCardId;
+			navigator.accelerometer.getCurrentAcceleration(onLoad, onErrorLoad);
 
-			// get modal
-			var modal = document.getElementById(cardModalId);
+			function getAcceleration() {
+				navigator.accelerometer.getCurrentAcceleration(
+					accelerometerSuccess, accelerometerError);
 
-			//insert image into modal
-			//FIXME: refactor cardImage to use ajax post that gets big image from server
-			var cardImage = document.getElementById(cardImageId);
+				function accelerometerSuccess(acceleration) {
+					alert('Acceleration X: ' + acceleration.x + '\n' +
+						'Acceleration Y: ' + acceleration.y + '\n' +
+						'Acceleration Z: ' + acceleration.z + '\n' +
+						'Timestamp: ' + acceleration.timestamp + '\n');
+				};
 
-			// prepare card info for server request
-			var cardName = this.alt;
-			var cardImageSource = this.src;
-			// get last part of source, which is the file name
-			var sourceParts = cardImageSource.split('/');
-			var cardFileName = sourceParts.pop() || sourceParts.pop();
+				function accelerometerError() {
+					alert('onError!');
+				};
+			}
 
-			// get larger image from server
-			var serverImageSource = platform + "zhang_kevin_project2/vanguardImages/" + cardFileName;
-			var serverCardId = "server-card-" + currentCardId;
+			var accelerometerOptions2 = {
+				frequency: 200
+			}
 
-			var modalImage = document.getElementById(modalImageId);
-			modal.style.display = "block";
-			modalImage.src = serverImageSource;
-			modalImage.alt = cardName;
+			var accelerometerOptions = {
+				frequency: 500
+			}
+			var watchID = navigator.accelerometer.watchAcceleration(
+				accelerometerSuccess, accelerometerError, accelerometerOptions);
 
-			currentModal = modal;
-		});
+			var previousAcceleration = {
+				x: currentx,
+				y: currenty,
+				z: currentz
+			};
 
-		$(document).on("click", ".close", function () {
-			var modal = currentModal;
-			modal.style.display = "none";
-		});
+			/*function accelerometerSuccess(acceleration)
+			 {
+				 var accelerationChange = {};
+				 if (previousAcceleration.x !== null) {
+					 accelerationChange.x = Math.abs(previousAcceleration.x - acceleration.x);
+					 accelerationChange.y = Math.abs(previousAcceleration.y - acceleration.y);
+					 accelerationChange.z = Math.abs(previousAcceleration.z - acceleration.z);
+				 }
 
-		// command for detecting shake
-		/*shake.startWatch(onShake, onError);
-		
-		var onShake = function () {
-			// Fired when a shake is detected
-			// clear previous starting hand
-            $(".row").empty();
+				 previousAcceleration = {
+					 x: acceleration.x,
+					 y: acceleration.y,
+					 z: acceleration.z
+				 };
 
-            alert("Shaking the phone");
+				 if (accelerationChange.x + accelerationChange.y + accelerationChange.z > 10) {
+					 $(".row").empty();
+					 displayStartingHand(viewdeckcards);
+				 }
+			 }*/ // Another method for shaking if first one doesn't work
 
-			//draw another hand
-			displayStartingHand(viewdeckcards);
-		};*/
 
-        document.addEventListener("deviceready", onDeviceReady, false);
+			function accelerometerSuccess(acceleration) {
+				if (Math.abs(acceleration.x) >= 6 || Math.abs(acceleration.y) >= 6) {
+					currentx = acceleration.x;
+					currenty = acceleration.y;
 
-        function onDeviceReady()
-        {
-            var currentx;
-            var currenty;
-            var currentz;
-            var watchID2;
-            var watchID3;
-            var shake1 = false;
-            var shake2 = false;
+					shake1 = true;
 
-            navigator.accelerometer.getCurrentAcceleration(onLoad, onErrorLoad);
-            
-            function getAcceleration() {
-                navigator.accelerometer.getCurrentAcceleration(
-                    accelerometerSuccess, accelerometerError);
+					watchID2 = navigator.accelerometer.watchAcceleration(
+						accelerometerSuccess2, accelerometerError, accelerometerOptions2);
+				}
+			};
 
-                function accelerometerSuccess(acceleration) {
-                    alert('Acceleration X: ' + acceleration.x + '\n' +
-                        'Acceleration Y: ' + acceleration.y + '\n' +
-                        'Acceleration Z: ' + acceleration.z + '\n' +
-                        'Timestamp: ' + acceleration.timestamp + '\n');
-                };
+			function accelerometerSuccess2(acceleration) {
+				if ((Math.abs(acceleration.x) >= 6 || Math.abs(acceleration.y) >= 6) && shake1) {
+					if (acceleration.x < currentx || acceleration.y < currenty) {
+						currentx = acceleration.x;
+						currenty = acceleration.y;
 
-                function accelerometerError() {
-                    alert('onError!');
-                };
-            }
+						shake2 = true;
 
-            var accelerometerOptions2 = {
-                frequency: 200
-            }
+						watchID3 = navigator.accelerometer.watchAcceleration(
+							accelerometerSuccess3, accelerometerError, accelerometerOptions2);
+					}
+				}
 
-            var accelerometerOptions = {
-                frequency: 500
-            }
-            var watchID = navigator.accelerometer.watchAcceleration(
-                accelerometerSuccess, accelerometerError, accelerometerOptions);
+				setTimeout(function () {
+					navigator.accelerometer.clearWatch(watchID2);
+				}, 1000);
+			};
 
-            var previousAcceleration = {
-                x: currentx,
-                y: currenty,
-                z: currentz
-            };
+			function accelerometerSuccess3(acceleration) {
+				if ((Math.abs(acceleration.x) >= 6 || Math.abs(acceleration.y) >= 6) && shake1 && shake2) {
+					if (acceleration.x > currentx || acceleration.y > currenty) {
+						currentx = acceleration.x;
+						currenty = acceleration.y;
 
-           /*function accelerometerSuccess(acceleration)
-            {
-                var accelerationChange = {};
-                if (previousAcceleration.x !== null) {
-                    accelerationChange.x = Math.abs(previousAcceleration.x - acceleration.x);
-                    accelerationChange.y = Math.abs(previousAcceleration.y - acceleration.y);
-                    accelerationChange.z = Math.abs(previousAcceleration.z - acceleration.z);
-                }
+						$(".row").empty();
+						displayStartingHand(viewdeckcards);
 
-                previousAcceleration = {
-                    x: acceleration.x,
-                    y: acceleration.y,
-                    z: acceleration.z
-                };
+						shake1 = false;
+						shake2 = false;
+					}
+				}
 
-                if (accelerationChange.x + accelerationChange.y + accelerationChange.z > 10) {
-                    $(".row").empty();
-                    displayStartingHand(viewdeckcards);
-                }
-            }*/ // Another method for shaking if first one doesn't work
+				setTimeout(function () {
+					navigator.accelerometer.clearWatch(watchID3);
+				}, 1000);
+			};
 
-            
-            function accelerometerSuccess(acceleration) {
-                if (Math.abs(acceleration.x) >= 6 || Math.abs(acceleration.y) >= 6) {
-                    currentx = acceleration.x;
-                    currenty = acceleration.y;
+			function accelerometerError() {
+				alert('onError!');
+			};
 
-                    shake1 = true;
+			function onLoad(acceleration) {
+				currentx = acceleration.x;
+				currenty = acceleration.y;
+				currentz = acceleration.z;
+			}
 
-                    watchID2 = navigator.accelerometer.watchAcceleration(
-                        accelerometerSuccess2, accelerometerError, accelerometerOptions2);
-                }
-            };
-
-            function accelerometerSuccess2(acceleration) {
-                if ((Math.abs(acceleration.x) >= 6 || Math.abs(acceleration.y) >= 6) && shake1) {
-                    if (acceleration.x < currentx || acceleration.y < currenty) {
-                        currentx = acceleration.x;
-                        currenty = acceleration.y;
-
-                        shake2 = true;
-
-                        watchID3 = navigator.accelerometer.watchAcceleration(
-                            accelerometerSuccess3, accelerometerError, accelerometerOptions2);
-                    }
-                }
-
-                setTimeout(function () {
-                    navigator.accelerometer.clearWatch(watchID2);
-                }, 1000);
-            };
-
-            function accelerometerSuccess3(acceleration) {
-                if ((Math.abs(acceleration.x) >= 6 || Math.abs(acceleration.y) >= 6) && shake1 && shake2) {
-                    if (acceleration.x > currentx || acceleration.y > currenty) {
-                        currentx = acceleration.x;
-                        currenty = acceleration.y;
-
-                        $(".row").empty();
-                        displayStartingHand(viewdeckcards);
-
-                        shake1 = false;
-                        shake2 = false;
-                    }
-                }
-
-                setTimeout(function () {
-                    navigator.accelerometer.clearWatch(watchID3);
-                }, 1000);
-            };
-
-            function accelerometerError() {
-                alert('onError!');
-            };
-
-            function onLoad(acceleration)
-            {
-                currentx = acceleration.x;
-                currenty = acceleration.y;
-                currentz = acceleration.z;
-            }
-
-            function onErrorLoad()
-            {
-                alert("error");
-                currentx = 0;
-                currenty = 0;
-            }
-        }
+			function onErrorLoad() {
+				alert("error");
+				currentx = 0;
+				currenty = 0;
+			}
+		}
 
 	</script>
 
@@ -361,17 +204,6 @@
             <h1>Vanguard Deck Builder</h1>
         </div>
     </header>
-
-    <!-- OLD NAV
-        <nav class="site-nav">
-        <div class="container">
-            <ul>
-                <li><a href="browse.html">Browse Decks</a></li>
-                <li><a href="build.html">Build Decks</a></li>
-                <li><a id="logout">Logout</a></li>
-            </ul>
-        </div>
-    </nav>-->
 
     <div class="site-nav">
 		<div id="sideMenu" class="sidemenu">

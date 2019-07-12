@@ -1,4 +1,17 @@
-﻿//command for profile link
+﻿//function to getting user_id from session and logging out if not set
+function getUserId() {
+    //get user id from session
+    var user_id = sessionStorage.getItem('user_id');
+    user_id = parseInt(user_id);
+    //if user id not set, return to login
+    if (user_id === null || isNaN(user_id)) {
+        location.href = "index.html";
+    }
+
+    return user_id;
+}
+
+//command for profile link
 function goToProfile() {
     var creator_id = sessionStorage.getItem("user_id");
     var creator = sessionStorage.getItem("username");
