@@ -24,6 +24,7 @@
 	<script type="text/javascript" src="scripts/pageActions.js"></script>
 	<script type="text/javascript" src="scripts/deckCardActions.js"></script>
 	<script type="text/javascript" src="scripts/imageActions.js"></script>
+	<!-- <script type="text/javascript" src="scripts/accelerometerActions.js"></script> -->
 
 	<script type="text/javascript">
 		//SESSION VARIABLES
@@ -60,9 +61,9 @@
 			displayStartingHand(viewdeckcards);
 		});
 
-		document.addEventListener("deviceready", onDeviceReady, false);
+		document.addEventListener("deviceready", watchForShake, false);
 
-		function onDeviceReady() {
+		function watchForShake() {
 			var currentx;
 			var currenty;
 			var currentz;
@@ -106,25 +107,25 @@
 			};
 
 			/*function accelerometerSuccess(acceleration)
-			 {
-				 var accelerationChange = {};
-				 if (previousAcceleration.x !== null) {
-					 accelerationChange.x = Math.abs(previousAcceleration.x - acceleration.x);
-					 accelerationChange.y = Math.abs(previousAcceleration.y - acceleration.y);
-					 accelerationChange.z = Math.abs(previousAcceleration.z - acceleration.z);
-				 }
-
-				 previousAcceleration = {
-					 x: acceleration.x,
-					 y: acceleration.y,
-					 z: acceleration.z
-				 };
-
-				 if (accelerationChange.x + accelerationChange.y + accelerationChange.z > 10) {
-					 $(".row").empty();
-					 displayStartingHand(viewdeckcards);
-				 }
-			 }*/ // Another method for shaking if first one doesn't work
+				{
+					var accelerationChange = {};
+					if (previousAcceleration.x !== null) {
+						accelerationChange.x = Math.abs(previousAcceleration.x - acceleration.x);
+						accelerationChange.y = Math.abs(previousAcceleration.y - acceleration.y);
+						accelerationChange.z = Math.abs(previousAcceleration.z - acceleration.z);
+					}
+		
+					previousAcceleration = {
+						x: acceleration.x,
+						y: acceleration.y,
+						z: acceleration.z
+					};
+		
+					if (accelerationChange.x + accelerationChange.y + accelerationChange.z > 10) {
+						$(".row").empty();
+						displayStartingHand(viewdeckcards);
+					}
+				}*/ // Another method for shaking if first one doesn't work
 
 
 			function accelerometerSuccess(acceleration) {
@@ -211,7 +212,7 @@
 			<a href="javascript:void(0)" class="closebtn" onclick="closeSideMenu()">&times;</a>
 			<a href="browse.html">Browse Decks</a>
 			<a href="build.html">Build Decks</a>
-			<a href="" onclick="goToProfile()">Profile</a>
+			<a onclick="goToProfile()">Profile</a>
 			<a id="logout">Logout</a>
 		</div>
 
@@ -225,7 +226,6 @@
             <h3 id="playtest-title" class="text-center">Playtest</h3>
 
             <hr />
-
 
             <p id="added-deck"></p>
 
