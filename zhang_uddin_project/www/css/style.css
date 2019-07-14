@@ -6,22 +6,20 @@
 	/*font-size: 1.1em;*/
 }
 
-/*.form-control:focus{
-	box-shadow: none;
-}*/
-
-/*form p{
-	font-size: .89em;
-}*/
-
-/*.form-div.login{
-	margin-top: 100px
-}*/
-
 /*header bar*/
-/*.site-header {
-	background-image: url("../images/vanguard_blue.jpg");
-}*/
+.site-header {
+	/*background-image: url("../images/vanguard_logo.jpg");*/
+	background-color: #F0F8FF;
+}
+
+.site-header img{
+	width: 60%;
+}
+
+img.center {
+	display: block;
+	margin: 0 auto;
+}
 
 /*nav bar*/
 .site-nav {
@@ -48,6 +46,10 @@
 .site-nav a{
 	text-decoration:none;
 	color: white;
+}
+
+body {
+	background-color: #F0F8FF;
 }
 
 /* For radio buttons when searching for cards */
@@ -102,6 +104,11 @@
   /*display: table-cell;*/
 
   overflow-wrap: break-word; /*handling long names and descriptions*/
+}
+
+.deckinfo-text {
+	background-image: url("../images/vanguard_glyph.png");
+	background-size: cover;
 }
 
 .deckinfo button{

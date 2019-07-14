@@ -110,11 +110,13 @@
 						"<img id='modal-image-" + i + "' class='modal-content'>" +
 						"</div>" +
 
+						"<div class='deckinfo-text'>" + 
 						"<p>" +
 						"<strong>Name: </strong>" + field.name + "<br>" +
 						"<strong>Clan: </strong>" + field.clan + "<br>" +
 						"<strong>Grade/Skill: </strong>" + field.grade + "<br>" +
 						"</p>" +
+						"</div>" +
 
 						//remove card button
 						"<div class='form-group'>" +
@@ -243,7 +245,8 @@
 <body>
 	<header class="site-header">
 		<div class="container">
-			<h1>Vanguard Deck Builder</h1>
+			<img src="images/vanguard_logo.png" class="center" />
+			<h1>Deck Builder</h1>
 		</div>
 	</header>
 
@@ -252,7 +255,7 @@
 			<a href="javascript:void(0)" class="closebtn" onclick="closeSideMenu()">&times;</a>
 			<a href="browse.html">Browse Decks</a>
 			<a href="build.html">Build Decks</a>
-			<a onclick="goToProfile()">Profile</a>
+			<a href="" onclick="goToProfile()">Profile</a>
 			<a id="logout">Logout</a>
 		</div>
 

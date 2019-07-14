@@ -42,14 +42,6 @@
 		var cardSearchResults = []
 
 		$(document).ready(function () {
-			/*var platform;
-
-			if (navigator.platform.match(/Win32|MacIntel/)) {
-				platform = "http://127.0.0.1/";
-			}
-			else {
-				platform = "http://10.0.2.2/";
-			}*/
 			//if editing deck, display current deck
 			if (setdeck !== null) {
 				document.getElementById("editing-deck").innerHTML = "Editing deck: <strong><a href='viewdeck.html' id='move-to-viewdeck'>" + setdeck.deckname + "</a></strong>. Any card added will go to this deck.";
@@ -107,11 +99,13 @@
 							"<img id='modal-image-" + i + "' class='modal-content'>" +
 							"</div>" +
 
+							"<div class='deckinfo-text'>" + 
 							"<p>" +
 							"<strong>Name: </strong>" + name + "<br>" +
 							"<strong>Clan: </strong>" + clan + "<br>" +
 							"<strong>Grade/Skill: </strong>" + grade + "<br>" +
 							"</p>" +
+							"</div>" + 
 
 							//add-cards selection
 							"<div class='form-group'>" +
@@ -162,55 +156,6 @@
 				$('html, body').animate({ scrollTop: 0 }, 'fast');
 			});
 
-			/*
-			//save the current modal globally, so it can be used in close
-			var currentModal = null;
-
-			// command for clicking on image
-			$(document).on("click", ".card-image", function () {
-				//alert("Card clicked!");
-				var currentCardId = this.id;
-				currentCardId = currentCardId.split('-')[2]; //get last number in id
-				//convert id string to int
-				currentCardId = parseInt(currentCardId);
-
-				// get card ids
-				var cardImageId = "card-image-" + currentCardId;
-				var cardModalId = "card-modal-" + currentCardId;
-				var modalImageId = "modal-image-" + currentCardId;
-
-				// get modal
-				var modal = document.getElementById(cardModalId);
-
-				//insert image into modal
-				//FIXME: refactor cardImage to use ajax post that gets big image from server
-				var cardImage = document.getElementById(cardImageId);
-
-				// prepare card info for server request
-				var cardName = this.alt;
-				var cardImageSource = this.src;
-				// get last part of source, which is the file name
-				var sourceParts = cardImageSource.split('/');
-				var cardFileName = sourceParts.pop() || sourceParts.pop();
-
-				// get larger image from server
-				var serverImageSource = platform + "zhang_kevin_project2/vanguardImages/" + cardFileName;
-				var serverCardId = "server-card-" + currentCardId;
-
-				var modalImage = document.getElementById(modalImageId);
-				modal.style.display = "block";
-				modalImage.src = serverImageSource;
-				modalImage.alt = cardName;
-
-				currentModal = modal;
-			});
-
-			$(document).on("click", ".close", function () {
-				var modal = currentModal;
-				modal.style.display = "none";
-			});
-			*/
-
 			$(document).on("click", "#move-to-viewdeck", function () {
 				//save view deck info into session variables
 				sessionStorage.setItem('viewdeck', JSON.stringify(setdeck));
@@ -227,7 +172,8 @@
 <body>
 	<header class="site-header">
 		<div class="container">
-			<h1>Vanguard Deck Builder</h1>
+			<img src="images/vanguard_logo.png" class="center" />
+			<h1>Deck Builder</h1>
 		</div>
 	</header>
 
@@ -236,7 +182,7 @@
 			<a href="javascript:void(0)" class="closebtn" onclick="closeSideMenu()">&times;</a>
 			<a href="browse.html">Browse Decks</a>
 			<a href="build.html">Build Decks</a>
-			<a onclick="goToProfile()">Profile</a>
+			<a href="" onclick="goToProfile()">Profile</a>
 			<a id="logout">Logout</a>
 		</div>
 

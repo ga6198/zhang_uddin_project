@@ -48,6 +48,7 @@
 			// display user's decks
 			var getUserDecksUrl = platform + "zhang_kevin_project2/getUserDecks.php";
 			$.post(getUserDecksUrl, { user_id: profile_creator_id }, function (data, textStatus) {
+				//alert(data);
 				var decks = data.decks;
 				var ratings = data.ratings;
 
@@ -87,12 +88,14 @@
 					if (profile_creator_id == user_id) {
 						$(".row").append(
 							"<div class='deckinfo'>" +
-							"<img src='" + serverImageSource + "' class='rounded' alt='" + clan + "' style='width:100%'" +
+							"<img src='" + serverImageSource + "' class='rounded' alt='" + clan + "' style='width:100%'>" +
+							"<div class='deckinfo-text'>" + 
 							"<p>" +
 							"<strong>Deck Name: </strong>" + deckname + "<br>" +
 							"<strong>Clan: </strong>" + clan + "<br>" +
 							"<strong>Rating (AVG): </strong>" + rating + "<br>" +
 							"</p>" +
+							"</div>" +
 
 							//button to view deck
 							"<div class='form-group'>" +
@@ -126,8 +129,27 @@
 				});
 
 				//display profile picture
-				//if the current profile has no picture
-				if (userDecks[0].creator_pic == null || userDecks[0].creator_pic == "") {
+				if (userDecks.length == 0) { // user has no decks
+					var creator = userinfo.creator;
+
+					//profile picture is the form, <user_id>_profileImage.jpeg
+					var creator_pic = userinfo.creator_id + "_profileImage.jpeg";
+					var serverProfile = platform + "zhang_kevin_project2/profileImages/" + creator_pic;
+
+					//if unique profile image is not there, use vanguard_blue.jpg as error image
+					var onErrorPath = "profileImages/vanguard_blue.jpg";
+					var serverErrorSource = platform + "zhang_kevin_project2/" + onErrorPath;
+					$(".profile-picture").append("<img src='" + serverProfile + "' alt='" + creator + "' id='prof-pic' class='avatar center' onerror=this.src='" + serverErrorSource + "'>");
+
+					//upload picture
+					$(".upload-picture-camera").append("<button type='submit' name='camera-picture-btn' id='camera-picture-btn' class='btn btn-primary btn-block btn-sm'>Take Picture</button>");
+					$(".upload-picture-gallery").append("<button type='submit' name='gallery-picture-btn' id='gallery-picture-btn' class='btn btn-primary btn-block btn-sm'>Upload Picture</button>");
+
+					//display that no decks are there
+					//$("#deck-message").innerHTML = "No decks";
+					document.getElementById("deck-message").innerHTML = "No decks"
+				}
+				else if (userDecks[0].creator_pic == null || userDecks[0].creator_pic == "") { //if the current profile has no picture
 					var creator = userDecks[0].creator;
 					var serverDefaultProfile = platform + "zhang_kevin_project2/profileImages/vanguard_blue.jpg"
 					$(".profile-picture").append("<img src='" + serverDefaultProfile + "' alt='" + creator + "' id='prof-pic' class='avatar center'>");
@@ -203,7 +225,8 @@
 <body>
 	<header class="site-header">
 		<div class="container">
-			<h1>Vanguard Deck Builder</h1>
+			<img src="images/vanguard_logo.png" class="center" />
+			<h1>Deck Builder</h1>
 		</div>
 	</header>
 
@@ -212,7 +235,7 @@
 			<a href="javascript:void(0)" class="closebtn" onclick="closeSideMenu()">&times;</a>
 			<a href="browse.html">Browse Decks</a>
 			<a href="build.html">Build Decks</a>
-			<a onclick="goToProfile()">Profile</a>
+			<a href="" onclick="goToProfile()">Profile</a>
 			<a id="logout">Logout</a>
 		</div>
 
@@ -237,6 +260,7 @@
 			<hr />
 
 			<h3 class="text-center">Decks</h3>
+			<p id="deck-message" class="text-center"></p>
 			<div class="row">
 
 			</div>
