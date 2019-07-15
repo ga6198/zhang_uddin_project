@@ -147,13 +147,14 @@ $(document).ready(function () {
     // command for the rate button
     $(document).on("click", "#rating-btn", function () {
         var rating = $("#rating :selected").val(); // The value of the selected option
+        var message = $("#rating-msg").val();
         rating = parseInt(rating);
 
         var deck_id = viewdeck.deck_id;
 
         //post rating w/ ajax post
         var postRatingUrl = platform + "zhang_kevin_project2/postrating.php";
-        $.post(postRatingUrl, { deck_id: deck_id, rating: rating, user_id: user_id }, function (data, textStatus) {
+        $.post(postRatingUrl, { deck_id: deck_id, rating: rating, message: message, user_id: user_id }, function (data, textStatus) {
             document.getElementById("number-rating").style.display = "none";
             if (data === "rating already submitted") {
                 document.getElementById("review-score").innerHTML = "You have already submitted a rating for this deck!";
