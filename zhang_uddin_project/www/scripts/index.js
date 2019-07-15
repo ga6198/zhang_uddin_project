@@ -44,25 +44,13 @@
     };
 
     //back button event
-    //FIXME: make this return to previous page
     document.addEventListener("backbutton", onBackKeyDown, false);
     function onBackKeyDown(e) {
         // suppress default, which is exiting app
         e.preventDefault();
-        //alert('Back Button is Pressed!');
+        // go back to previous page
         window.history.go(-1);
     } 
-
-
-    //Crop Image Plugin Code
-        /* var croppedImageData;
-        plugins.crop(function success(data) {
-            alert("crop successful");
-            croppedImageData = data;
-        },
-        function fail() {
-            alert("Crop failed")
-        }, imageData, { quality: 100, targetWidth: 100, targetHeight: 100 });*/
 
 
     //camera button event
@@ -79,18 +67,9 @@
         //alert("Camera button was clicked");
 
         function onSuccess(imageData) {
-            //var profImg = document.getElementById('prof-pic');
-            //var imageDataSrc = 'data:image/jpeg;base64,' + imageData;
-            //profImg.setAttribute('src', imageDataSrc);
-
             //get user id from session
             var user_id = sessionStorage.getItem('user_id');
             user_id = parseInt(user_id);
-
-            //load platform script
-            /*$.getScript("platform.js", function () {
-                alert("Script loaded but not necessarily executed.");
-            });*/
 
             var uploadPictureURL = platform + "zhang_kevin_project2/upload.php";
 
@@ -120,46 +99,6 @@
             alert('Failed because: ' + message);
         }
     }
-
-    /*function cameraTakePicture() {
-        navigator.camera.getPicture(onSuccess, onFail, {
-            quality: 50,
-            destinationType: Camera.DestinationType.DATA_URL
-        });
-
-        //alert("Camera button was clicked");
-
-        function onSuccess(imageData) {
-            //get user id from session
-            var user_id = sessionStorage.getItem('user_id');
-            user_id = parseInt(user_id);
-
-            //load platform script
-            $.getScript("platform.js", function () {
-                alert("Script loaded but not necessarily executed.");
-            });
-
-            var uploadPictureURL = platform + "zhang_kevin_project2/upload.php";
-
-            $.ajax({
-                type: "POST",
-                url: uploadPictureURL,
-                data: { img_data: imageData, user_id: user_id },
-                cache: false,
-                contentType: "application/x-www-form-urlencoded",
-                error: function () {
-                    alert("Uploading camera photo went wrong");
-                },
-                success: function (result) {
-                    //alert("upload OK: " + result);
-                }
-            });
-        }
-
-        function onFail(message) {
-            alert('Failed because: ' + message);
-        }
-    }*/
 
     //gallery button event
     document.getElementById("upload-picture-gallery").addEventListener("click", cameraGetPicture); 
@@ -213,12 +152,3 @@
         }
     }
 })();
-
-function openSideMenu() {
-    document.getElementById("sideMenu").style.width = "250px";
-}
-
-/* Set the width of the side navigation to 0 */
-function closeSideMenu() {
-    document.getElementById("sideMenu").style.width = "0";
-}

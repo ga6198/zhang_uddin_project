@@ -21,3 +21,13 @@ function goToProfile() {
     sessionStorage.setItem('userinfo', JSON.stringify(userinfo));
     location.href = "profile.html";
 }
+
+//functions fot the side nav
+function openSideMenu() {
+    document.getElementById("sideMenu").style.width = "250px";
+}
+
+/* Set the width of the side navigation to 0 */
+function closeSideMenu() {
+    document.getElementById("sideMenu").style.width = "0";
+}
