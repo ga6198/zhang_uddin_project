@@ -209,15 +209,16 @@ body {
         padding: 8px 8px 8px 32px;
         text-decoration: none;
         font-size: 1.3em;
-        color: #818181;
+        /*color: #818181;*/
+		color: #f1f1f1;
         display: block;
         transition: 0.3s;
     }
 
     /* When you mouse over the navigation links, change their color */
-    .sidemenu a:hover {
+    /*.sidemenu a:hover {
         color: #f1f1f1;
-    }
+    }*/
 
     /* Position and style the close button (top right corner) */
     .sidemenu .closebtn {
