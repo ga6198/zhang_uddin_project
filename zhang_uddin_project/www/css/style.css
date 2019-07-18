@@ -279,3 +279,15 @@ body {
 	height: 20px;
 	border-radius: 15%;
 }
+
+.ratinginfo {
+    /*flex: 1;*/ /* additionally, equal width */
+    padding: 1em;
+    border: 2px solid Navy;
+    border-radius: 15px;
+    width: 100%;
+    margin: 0.50%;
+    display: inline-block;
+    /*display: table-cell;*/
+    overflow-wrap: break-word; /*handling long names and descriptions*/
+}

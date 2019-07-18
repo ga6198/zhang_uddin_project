@@ -208,4 +208,8 @@ $(document).ready(function () {
 
         location.href = "search.html";
     });
+
+    $(document).on("click", ".deck-rating-btn", function () {
+        location.href = "rating.html";
+    });
 })

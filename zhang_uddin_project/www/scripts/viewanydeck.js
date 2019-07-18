@@ -174,4 +174,8 @@ $(document).ready(function () {
     $(document).on("click", ".playtest-btn", function () {
         location.href = "playtest.html";
     });
+
+    $(document).on("click", ".deck-rating-btn", function () {
+        location.href = "rating.html";
+    });
 })
