@@ -51,71 +51,75 @@
 	</div>
 
 	<section class="site-main">
-        <div class="container">
-            <!-- <p id="added-deck"></p> -->
-            <!-- title and creator-->
-            <h3 id="added-deck" class="text-center"></h3>
-            <p class="text-center">by</p>
-            <div class="profile-picture-container">
-                <div class="profile-picture"></div>
-                <h5 id="creator-name" class="text-center"></h5>
-            </div>
+		<div class="container">
+			<!-- <p id="added-deck"></p> -->
+			<!-- title and creator-->
+			<h3 id="added-deck" class="text-center"></h3>
+			<p class="text-center">by</p>
+			<div class="profile-picture-container">
+				<div class="profile-picture"></div>
+				<h5 id="creator-name" class="text-center"></h5>
+			</div>
 
-            <hr />
+			<hr />
 
-            Description: <p id="desc"></p>
+			Description: <p id="desc"></p>
 
-            <hr />
+			<hr />
 
-            <div class='form-group'>
-                <button class="btn btn-primary btn-sm set-deck-btn">Edit Deck</button>
-            </div>
+			<div class='form-group'>
+				<button class="btn btn-primary btn-sm set-deck-btn">Edit Deck</button>
+			</div>
 
-            <hr />
+			<hr />
 
-            <!-- Rating section -->
-            <p class="text-center">Rate/Comment</p>
-            <div class="form-group text-center" id="number-rating">
-                <select name='rating' id="rating" class="text-center">
-                    <option value='1'>1 (lowest)</option>
-                    <option value='2'>2</option>
-                    <option value='3'>3</option>
-                    <option value='4'>4</option>
-                    <option value='5'>5 (highest)</option>
-                </select>
-                <button type="submit" name="rating-btn" id="rating-btn" class="btn btn-primary btn-sm rating-btn">Post Rating</button>
-            </div>
-            <p id="review-score"></p>
+			<!-- Rating section -->
+			<p class="text-center">Rate/Comment</p>
+			<div class="form-group">
+				<h6>Comment:</h6>
+				<textarea class="form-control form-control-lg" name="rating-msg" id="rating-msg" rows="3" placeholder="Post a comment here"></textarea>
+			</div>
+			<div class="form-group text-center" id="number-rating">
+				<select name='rating' id="rating" class="text-center">
+					<option value='1'>1 (lowest)</option>
+					<option value='2'>2</option>
+					<option value='3'>3</option>
+					<option value='4'>4</option>
+					<option value='5'>5 (highest)</option>
+				</select>
+				<button type="submit" name="rating-btn" id="rating-btn" class="btn btn-primary btn-sm rating-btn">Post Rating</button>
+			</div>
+			<p id="review-score"></p>
 
-            <button class="btn btn-primary btn-sm deck-rating-btn">View All Ratings</button>
+			<button class="btn btn-primary btn-sm deck-rating-btn">View All Ratings</button>
 
-            <hr />
+			<hr />
 
-            <!-- Other Deck Actions -->
-            <button class="btn btn-primary btn-sm decklist-btn">Show Decklist</button>
-            <div class="decklist nodisplay">
-                <p>Grade 0:</p>
-                <ul id="g0-list"></ul>
-                <p>Grade 1:</p>
-                <ul id="g1-list"></ul>
-                <p>Grade 2:</p>
-                <ul id="g2-list"></ul>
-                <p>Grade 3:</p>
-                <ul id="g3-list"></ul>
-                <p>Grade 4:</p>
-                <ul id="g4-list"></ul>
-            </div>
+			<!-- Other Deck Actions -->
+			<button class="btn btn-primary btn-sm decklist-btn">Show Decklist</button>
+			<div class="decklist nodisplay">
+				<p>Grade 0:</p>
+				<ul id="g0-list"></ul>
+				<p>Grade 1:</p>
+				<ul id="g1-list"></ul>
+				<p>Grade 2:</p>
+				<ul id="g2-list"></ul>
+				<p>Grade 3:</p>
+				<ul id="g3-list"></ul>
+				<p>Grade 4:</p>
+				<ul id="g4-list"></ul>
+			</div>
 
-            <button class="btn btn-primary btn-sm playtest-btn">Draw Starting Hand</button>
+			<button class="btn btn-primary btn-sm playtest-btn">Draw Starting Hand</button>
 
-            <hr />
+			<hr />
 
-            <!-- Section for cards to be displayed -->
-            <div class="row">
+			<!-- Section for cards to be displayed -->
+			<div class="row">
 
-            </div>
+			</div>
 
-        </div>
+		</div>
 	</section>
 
 	<footer class="site-footer"></footer>
