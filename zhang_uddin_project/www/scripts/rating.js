@@ -19,7 +19,8 @@ $(document).ready(function () {
     document.getElementById("desc").innerHTML = viewdeck.description;
 
     var creator = viewdeck.creator;
-    var serverProfile = platform + "zhang_kevin_project2/profileImages/" + viewdeck.creator_pic;
+    //var serverProfile = platform + "zhang_kevin_project2/profileImages/" + viewdeck.creator_pic;
+    var serverProfile = platform + "zhang_kevin_project2/profileImages/" + viewdeck.creator_pic + "?t=" + new Date().getTime();
     $(".profile-picture").append("<img src='" + serverProfile + "' alt='" + creator + "' id='prof-pic' class='avatar center'>");
     document.getElementById("creator-name").innerHTML = creator;
 
@@ -30,7 +31,8 @@ $(document).ready(function () {
             // print each rating
             if (ratings.length > 0) {
                 $.each(ratings, function (i, field) {
-                    var creator_pic_dir = platform + "zhang_kevin_project2/profileImages/" + field.profile_picture;
+                    //var creator_pic_dir = platform + "zhang_kevin_project2/profileImages/" + field.profile_picture;
+                    var creator_pic_dir = platform + "zhang_kevin_project2/profileImages/" + field.profile_picture + "?t=" + new Date().getTime();
 
                     $(".row").append("<div class='ratinginfo'>" +
                         "<strong>Creator: <img src='" + creator_pic_dir + "' class='avatar-small'> </strong><a href='#' id='author-name-" + i + "' class='author-name'>" + field.username + "</a><br>" +

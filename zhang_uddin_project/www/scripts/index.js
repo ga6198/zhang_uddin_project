@@ -84,13 +84,8 @@
                     alert("Uploading camera photo went wrong");
                 },
                 success: function (result) {
-                    /*alert(result);
-                    var imgURL = platform + "zhang_kevin_project2" + result;
-                    alert(imgURL);
-                    var profImg = document.getElementById('prof-pic');
-                    profImg.src = imgURL;*/
                     //location.href = profile.html;
-                    location.reload();
+                    location.reload(true); //forced reload
                 }
             });
         }
@@ -136,13 +131,8 @@
                     alert("Uploading camera photo went wrong");
                 },
                 success: function (result) {
-                    /*alert(result);
-                    var imgURL = platform + "zhang_kevin_project2" + result;
-                    alert(imgURL);
-                    var profImg = document.getElementById('prof-pic');
-                    profImg.src = imgURL;*/
                     //location.href = profile.html;
-                    location.reload();
+                    location.reload(true); //forced reload
                 }
             });
         }

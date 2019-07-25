@@ -21,7 +21,8 @@ $(document).ready(function () {
     document.getElementById("desc").innerHTML = viewdeck.description;
 
     var creator = viewdeck.creator;
-    var serverProfile = platform + "zhang_kevin_project2/profileImages/" + viewdeck.creator_pic;
+    //var serverProfile = platform + "zhang_kevin_project2/profileImages/" + viewdeck.creator_pic;
+    var serverProfile = platform + "zhang_kevin_project2/profileImages/" + viewdeck.creator_pic + "?t=" + new Date().getTime();
     $(".profile-picture").append("<img src='" + serverProfile + "' alt='" + creator + "' id='prof-pic' class='avatar center'>");
     document.getElementById("creator-name").innerHTML = creator;
 

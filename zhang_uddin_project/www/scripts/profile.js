@@ -106,7 +106,8 @@ $(document).ready(function () {
 
 			//profile picture is the form, <user_id>_profileImage.jpeg
 			var creator_pic = userinfo.creator_id + "_profileImage.jpeg";
-			var serverProfile = platform + "zhang_kevin_project2/profileImages/" + creator_pic;
+            //var serverProfile = platform + "zhang_kevin_project2/profileImages/" + creator_pic;
+            var serverProfile = platform + "zhang_kevin_project2/profileImages/" + creator_pic + "?t=" + new Date().getTime();
 
 			//if unique profile image is not there, use vanguard_blue.jpg as error image
 			var onErrorPath = "profileImages/vanguard_blue.jpg";
@@ -129,7 +130,8 @@ $(document).ready(function () {
 		else {
 			var creator = userDecks[0].creator;
 			var creator_pic = userDecks[0].creator_pic;
-			var serverProfile = platform + "zhang_kevin_project2/profileImages/" + creator_pic;
+			//var serverProfile = platform + "zhang_kevin_project2/profileImages/" + creator_pic;
+            var serverProfile = platform + "zhang_kevin_project2/profileImages/" + creator_pic + "?t=" + new Date().getTime();
 			$(".profile-picture").append("<img src='" + serverProfile + "' alt='" + creator + "' id='prof-pic' class='avatar center'>");
 		}
 

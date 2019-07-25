@@ -60,7 +60,8 @@ $(document).ready(function () {
             var creator_id = field.user_id;
             var creator = field.username;
             var creator_pic = field.profile_picture;
-            var creator_pic_dir = platform + "zhang_kevin_project2/profileImages/" + creator_pic;
+            //var creator_pic_dir = platform + "zhang_kevin_project2/profileImages/" + creator_pic;
+            var creator_pic_dir = platform + "zhang_kevin_project2/profileImages/" + creator_pic + "?t=" + new Date().getTime();
 
             var clan = field.clan;
             var clanImageDir = getClanImageDirectory(clan);
