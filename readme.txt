@@ -8,6 +8,8 @@ Make sure the lines "AllowOverride All" and "Require all granted" are present.
 
 For additional help with the previous three steps, visit this link: https://stackoverflow.com/questions/39338660/android-you-dont-have-permission-to-access-on-this-server-wamp
 
+The code in the zhang_uddin_project folder is the same as what is provided in the apk. Look at this folder to examine the program's logic.
+
 Setting up the database
 1. Create a database called "vanguard" in MySQL 
 2. Run the scripts in the zhang_kevin_project2/sql folder. Verify that a table called users, decks, cards_all, ownsdeck, and deckcontains have been created
