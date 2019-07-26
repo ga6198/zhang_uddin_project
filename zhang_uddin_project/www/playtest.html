@@ -114,13 +114,13 @@
 						accelerationChange.y = Math.abs(previousAcceleration.y - acceleration.y);
 						accelerationChange.z = Math.abs(previousAcceleration.z - acceleration.z);
 					}
-		
+
 					previousAcceleration = {
 						x: acceleration.x,
 						y: acceleration.y,
 						z: acceleration.z
 					};
-		
+
 					if (accelerationChange.x + accelerationChange.y + accelerationChange.z > 10) {
 						$(".row").empty();
 						displayStartingHand(viewdeckcards);
@@ -196,6 +196,7 @@
 
 	</script>
 
+	<meta name="description" content="Draw a starting testing hand for a Vanguard deck">
 	<title>Playtest</title>
 </head>
 
