@@ -15,7 +15,7 @@ Setting up the database
 2. Run the scripts in the zhang_kevin_project2/sql folder. Verify that a table called users, decks, cards_all, ownsdeck, and deckcontains have been created
 3. Verify that your database has an admin user with the name "root" and an empty password. This is the name used in the config.php file. If you need to edit the user, change this file.
 
-Running the project will require the ip address of the server, so make sure you have it.
+Running the project will require the ip address of the server. Due to the scope of this project (class project), this project did not have a dedicated server and the ip address of the server is inputted manually (as suggested by the teacher)
 Getting ip address
 1. Open command line
 2. Type "ipconfig"
